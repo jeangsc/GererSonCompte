@@ -1,5 +1,6 @@
 package com.example.jean.gerersoncompte;
 
+import android.app.Dialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
@@ -118,6 +119,36 @@ public class OperationsManagerActivity extends AppCompatActivity
         openContextMenu(view);
     }
 
+    public void processFilterOperations(View view)
+    {
+        showDialog(1);
+    }
+
+    public void processSortOperations(View view)
+    {
+        showDialog(2);
+    }
+
+    public void processSortByName(View view)
+    {
+        Log.i("Sort", "Name");
+    }
+
+    public void processSortByCategory(View view)
+    {
+        Log.i("Sort", "Category");
+    }
+
+    public void processSortByAmount(View view)
+    {
+        Log.i("Sort", "Amount");
+    }
+
+    public void processSortByExecDate(View view)
+    {
+        Log.i("Sort", "ExecDate");
+    }
+
     public void processModifyOperation()
     {
 
@@ -160,6 +191,27 @@ public class OperationsManagerActivity extends AppCompatActivity
             inflater.inflate(R.menu.operation_options, menu);
             updateBackgroundView(true);
         }
+    }
+
+    @Override
+    public Dialog onCreateDialog(int id)
+    {
+        Dialog menu = null;
+        switch(id)
+        {
+            case 1:
+                menu = new Dialog(this);
+                menu.setTitle("Filtrer par");
+                menu.setContentView(R.layout.dialog_operation_filter);
+                break;
+
+            case 2:
+                menu = new Dialog(this);
+                menu.setTitle("Trier par");
+                menu.setContentView(R.layout.dialog_operation_sort);
+                break;
+        }
+        return menu;
     }
 
     @Override

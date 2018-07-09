@@ -28,7 +28,35 @@
         <SearchView
             android:id="@+id/ope_man_sea_nom"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:layout_toLeftOf="@+id/ope_man_bouton_tri"
+            android:layout_alignParentLeft="true"
+            android:layout_marginLeft="2dp"
+            android:layout_marginRight="1dp"
+            android:background="@drawable/edittext_design1"/>
+
+        <ImageButton
+            android:id="@+id/ope_man_bouton_tri"
+            android:layout_height="wrap_content"
+            android:layout_width="50dp"
+            android:layout_toLeftOf="@+id/ope_man_bouton_filtre"
+            android:layout_alignBottom="@+id/ope_man_sea_nom"
+            android:layout_alignTop="@+id/ope_man_sea_nom"
+            android:layout_marginRight="1dp"
+            android:background="@drawable/layer_button_sort"
+            android:onClick="processSortOperations"/>
+
+        <ImageButton
+            android:id="@+id/ope_man_bouton_filtre"
+            android:layout_height="wrap_content"
+            android:layout_width="50dp"
+            android:layout_alignParentRight="true"
+            android:layout_alignBottom="@+id/ope_man_sea_nom"
+            android:layout_alignTop="@+id/ope_man_sea_nom"
+            android:layout_marginRight="2dp"
+            android:background="@drawable/layer_button_filter"
+            android:onClick="processFilterOperations"/>
+
     </RelativeLayout>
 
     <ListView
