@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:focusable="true"
+    android:focusableInTouchMode="true"
+    android:background="@drawable/background_design1"
+    tools:context="com.example.jean.gerersoncompte.AccountsManagerActivity">
+
+    <TextView
+        android:id="@+id/acc_man_label_comptes"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/label_comptes"
+        android:textAlignment="center"
+        android:textColor="@color/colorBlack"
+        android:textSize="24sp"
+        android:textStyle="bold" />
+
+    <ListView
+        android:id="@+id/acc_man_liste_comptes"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginTop="25dp"
+        app:layout_constraintBottom_toTopOf="@+id/acc_man_bouton_ajout"
+        app:layout_constraintTop_toBottomOf="@+id/acc_man_label_comptes" />
+
+    <Button
+        android:id="@+id/acc_man_bouton_ajout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/boutton_ajout"
+        android:textSize="14sp"
+        android:textColor="@color/colorWhite"
+        android:visibility="visible"
+        android:background="@drawable/button_design1"
+        android:layout_marginBottom="3dp"
+        android:layout_marginLeft="3dp"
+        android:layout_marginRight="3dp"
+        android:onClick="processCreateAccount"
+        app:layout_constraintBottom_toTopOf="parent" />
+
+</android.support.constraint.ConstraintLayout>

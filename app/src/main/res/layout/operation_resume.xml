@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/colorGreenLight">
+
+
+    <TextView
+        android:id="@+id/ope_res_label_nom"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="5dp"
+        android:text="@string/value_compte_defaut"
+        android:textColor="@color/colorBlack"
+        android:textSize="18sp" />
+
+    <TextView
+        android:id="@+id/ope_res_label_categorie"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/ope_res_label_nom"
+        android:layout_alignStart="@+id/ope_res_label_nom"
+        android:layout_below="@+id/ope_res_label_nom"
+        android:layout_marginTop="20dp"
+        android:text="@string/label_categorie"
+        android:textColor="@color/colorBlack" />
+
+    <TextView
+        android:id="@+id/ope_res_value_categorie"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@+id/ope_res_label_categorie"
+        android:layout_marginLeft="6dp"
+        android:layout_toEndOf="@+id/ope_res_label_categorie"
+        android:layout_toRightOf="@+id/ope_res_label_categorie"
+        android:text="@string/value_categorie_default"
+        android:textColor="@color/colorBlack" />
+
+    <TextView
+        android:id="@+id/ope_res_label_montant"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/ope_res_label_nom"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_marginEnd="110dp"
+        android:layout_marginRight="110dp"
+        android:text="@string/label_montant"
+        android:textColor="@color/colorBlack" />
+
+    <TextView
+        android:id="@+id/ope_res_value_montant"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_below="@+id/ope_res_label_montant"
+        android:layout_marginEnd="30dp"
+        android:layout_marginRight="30dp"
+        android:layout_marginTop="-6dp"
+        android:text="@string/value_solde_defaut"
+        android:textColor="@color/colorBlack" />
+
+    <TextView
+        android:id="@+id/ope_res_label_execution"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/ope_res_label_montant"
+        android:layout_alignStart="@+id/ope_res_label_montant"
+        android:layout_below="@+id/ope_res_label_montant"
+        android:layout_marginTop="20dp"
+        android:text="Date exécution:"
+        android:textColor="@color/colorBlack" />
+
+    <TextView
+        android:id="@+id/ope_res_value_execution"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_below="@+id/ope_res_label_execution"
+        android:layout_marginEnd="30dp"
+        android:layout_marginRight="30dp"
+        android:layout_marginTop="-6dp"
+        android:text="@string/value_date_default"
+        android:textColor="@color/colorBlack" />
+
+    <Space
+        android:id="@+id/ope_res_espace"
+        android:layout_width="match_parent"
+        android:layout_height="14dp"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_below="@+id/ope_res_value_execution" />
+
+
+</RelativeLayout>

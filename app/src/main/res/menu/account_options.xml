@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/acc_opt_compte_courant"
+        android:title="@string/label_compte_courant" />
+    <item
+        android:id="@+id/acc_opt_modifier"
+        android:title="@string/label_modifier" />
+    <item
+        android:id="@+id/acc_opt_supprimer"
+        android:title="@string/label_supprimer">
+        <menu>
+            <item
+                android:id="@+id/acc_opt_supprimer_oui"
+                android:title="Oui" />
+            <item
+                android:id="@+id/acc_opt_supprimer_non"
+                android:title="Non" />
+        </menu>
+    </item>
+</menu>

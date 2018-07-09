@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:focusable="true"
+    android:focusableInTouchMode="true"
+    android:background="@drawable/background_design1"
+    tools:context="com.example.jean.gerersoncompte.AccountCreationActivity">
+
+    <RelativeLayout
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="50dp"
+        android:layout_marginRight="50dp"
+        android:layout_marginTop="50dp"
+        android:background="@drawable/window_design1"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <TextView
+            android:id="@+id/acc_cre_label_nom"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="25dp"
+            android:layout_marginTop="50dp"
+            android:text="@string/label_nom"
+            android:textColor="@color/colorWhite"
+            android:textSize="12sp"
+            android:textStyle="bold" />
+
+        <EditText
+            android:id="@+id/acc_cre_edit_nom"
+            android:layout_width="200dp"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@+id/acc_cre_label_nom"
+            android:layout_below="@+id/acc_cre_label_nom"
+            android:background="@drawable/edittext_design1"
+            android:hint="Ex: MonCompte"
+            android:imeOptions="actionDone"
+            android:inputType="textNoSuggestions"
+            android:maxLength="30"
+            android:singleLine="true"
+            android:textSize="22sp" />
+
+        <TextView
+            android:id="@+id/acc_cre_label_solde"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@+id/acc_cre_label_nom"
+            android:layout_below="@+id/acc_cre_edit_nom"
+            android:layout_marginTop="25dp"
+            android:text="Solde actuel:"
+            android:textColor="@color/colorWhite"
+            android:textSize="12sp"
+            android:textStyle="bold" />
+
+        <EditText
+            android:id="@+id/acc_cre_edit_solde"
+            android:layout_width="200dp"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@+id/acc_cre_label_solde"
+            android:layout_below="@+id/acc_cre_label_solde"
+            android:background="@drawable/edittext_design1"
+            android:hint="Ex: 123.45"
+            android:imeOptions="actionDone"
+            android:inputType="numberSigned|numberDecimal"
+            android:maxLength="15"
+            android:singleLine="true"
+            android:textSize="22sp" />
+
+        <TextView
+            android:id="@+id/acc_cre_label_devise"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@+id/acc_cre_label_solde"
+            android:layout_below="@+id/acc_cre_edit_solde"
+            android:layout_marginTop="25dp"
+            android:text="@string/label_devise"
+            android:textColor="@color/colorWhite"
+            android:textSize="12sp"
+            android:textStyle="bold" />
+
+        <Spinner
+            android:id="@+id/acc_cre_spinner_devise"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@+id/acc_cre_label_devise"
+            android:layout_below="@+id/acc_cre_label_devise" />
+
+        <TextView
+            android:id="@+id/acc_cre_label_courant"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@+id/acc_cre_label_devise"
+            android:layout_below="@+id/acc_cre_spinner_devise"
+            android:layout_marginTop="25dp"
+            android:text="Compte courant:"
+            android:textColor="@color/colorWhite"
+            android:textSize="12sp"
+            android:textStyle="bold" />
+
+        <CheckBox
+            android:id="@+id/acc_cre_check_courant"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBaseline="@+id/acc_cre_label_courant"
+            android:layout_marginLeft="10dp"
+            android:layout_toRightOf="@+id/acc_cre_label_courant"
+            android:checked="false"
+            android:scaleX="2"
+            android:scaleY="2" />
+
+        <Button
+            android:id="@+id/acc_cre_bouton_valider"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/acc_cre_label_courant"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="20dp"
+            android:layout_marginTop="50dp"
+            android:background="@drawable/button_design1"
+            android:onClick="processCreateAccount"
+            android:text="Valider"
+            android:textColor="@color/colorWhite" />
+
+
+    </RelativeLayout>
+
+</android.support.constraint.ConstraintLayout>

@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="EditTextErrorChecker">
+        <attr name="filter">
+            <flag name="filterNone"        value="0" />
+            <flag name="filterNotEmpty"    value="1" />
+            <flag name="filterNotZero"     value="2" />
+            <flag name="filterDateExists"  value="4" />
+        </attr>
+        <attr name="textError" format="string" />
+    </declare-styleable>
+</resources>

@@ -1,0 +1,29 @@
+<resources>
+    <string name="app_name">GererSonCompte</string>
+    <string name="boutton_ajout">Créer un compte</string>
+    <string name="boutton_ajout_operation">Créer une opération</string>
+    <string name="boutton_gerer_operations">Gérer mes opérations</string>
+    <string name="boutton_resume_compte">Résumé du compte</string>
+    <string name="fichier_donnees_generales">general_datas.s</string>
+    <string name="label_a_venir">A venir:</string>
+    <string name="label_categorie">Catégorie:</string>
+    <string name="label_compte_courant">Définir comme compte courant</string>
+    <string name="label_comptes">Mes comptes</string>
+    <string name="label_devise">Devise:</string>
+    <string name="label_echeance">Prochaine échéance:</string>
+    <string name="label_modifier">Modifier</string>
+    <string name="label_montant">Montant:</string>
+    <string name="label_nom">Nom:</string>
+    <string name="label_operations">Mes opérations</string>
+    <string name="label_prochain_solde">Prochain solde:</string>
+    <string name="label_solde">Solde actuel:</string>
+    <string name="label_supprimer">Supprimer</string>
+    <string name="titre_activity_accounts_manager">AccountsManagerActivity</string>
+    <string name="value_compte_defaut">"???"</string>
+    <string name="value_solde_defaut">0,00 EUR</string>
+    <string name="value_categorie_default">Aucune</string>
+    <string name="value_date_default">01/01/2018</string>
+    <string name="appwidget_text">EXAMPLE</string>
+    <string name="add_widget">Add widget</string>
+
+</resources>

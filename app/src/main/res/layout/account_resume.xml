@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+
+    <TextView
+        android:id="@+id/acc_res_nom"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="5dp"
+        android:layout_marginTop="14dp"
+        android:text="azeazedazdaz"
+        android:textColor="@color/colorBlack"
+        android:textSize="18sp" />
+
+    <ImageView
+        android:id="@+id/acc_res_image_etoile"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:layout_alignLeft="@+id/acc_res_nom"
+        android:layout_alignStart="@+id/acc_res_nom"
+        android:layout_below="@+id/acc_res_nom"
+        android:layout_marginLeft="2dp"
+        android:scaleX="1"
+        android:scaleY="1"
+        app:srcCompat="@drawable/etoile_verte" />
+
+    <TextView
+        android:id="@+id/acc_res_label_solde"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@+id/acc_res_nom"
+        android:layout_marginLeft="170dp"
+        android:text="@string/label_solde"
+        android:textColor="@color/colorBlack" />
+
+    <TextView
+        android:id="@+id/acc_res_value_solde"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_alignTop="@+id/acc_res_label_solde"
+        android:layout_marginRight="5dp"
+        android:text="10.000,00€"
+        android:textColor="@color/colorBlack" />
+
+    <TextView
+        android:id="@+id/acc_res_label_a_venir"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignRight="@+id/acc_res_label_solde"
+        android:layout_below="@+id/acc_res_label_solde"
+        android:layout_marginTop="2dp"
+        android:text="@string/label_a_venir"
+        android:textColor="@color/colorBlack" />
+
+    <TextView
+        android:id="@+id/acc_res_value_a_venir"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignRight="@+id/acc_res_value_solde"
+        android:layout_alignTop="@+id/acc_res_label_a_venir"
+        android:text="0,00€"
+        android:textColor="@color/colorBlack" />
+
+    <TextView
+        android:id="@+id/acc_res_label_prochain_solde"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignRight="@+id/acc_res_label_a_venir"
+        android:layout_below="@+id/acc_res_label_a_venir"
+        android:layout_marginTop="2dp"
+        android:text="@string/label_prochain_solde"
+        android:textColor="@color/colorBlack" />
+
+    <TextView
+        android:id="@+id/acc_res_value_prochain_solde"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignRight="@+id/acc_res_value_a_venir"
+        android:layout_alignTop="@+id/acc_res_label_prochain_solde"
+        android:text="0,00€"
+        android:textColor="@color/colorBlack" />
+
+    <Space
+        android:id="@+id/acc_res_espace"
+        android:layout_width="match_parent"
+        android:layout_height="14dp"
+        android:layout_below="@+id/acc_res_label_prochain_solde" />
+
+</RelativeLayout>

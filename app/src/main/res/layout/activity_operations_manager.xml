@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/background_design1"
+    android:focusable="true"
+    android:focusableInTouchMode="true"
+    tools:context="com.example.jean.gerersoncompte.OperationsManagerActivity">
+
+    <TextView
+        android:id="@+id/ope_man_label_operations"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/label_operations"
+        android:textAlignment="center"
+        android:textColor="@color/colorBlack"
+        android:textSize="24sp"
+        android:textStyle="bold" />
+
+    <RelativeLayout
+        android:id="@+id/ope_man_rlo_commands"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@+id/ope_man_label_operations">
+
+        <SearchView
+            android:id="@+id/ope_man_sea_nom"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+    </RelativeLayout>
+
+    <ListView
+        android:id="@+id/ope_man_liste_operations"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        app:layout_constraintTop_toBottomOf="@+id/ope_man_rlo_commands"
+        app:layout_constraintBottom_toTopOf="@+id/ope_man_bouton_ajout"/>
+
+    <Button
+        android:id="@+id/ope_man_bouton_ajout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/boutton_ajout_operation"
+        android:textSize="14sp"
+        android:textColor="@color/colorWhite"
+        android:visibility="visible"
+        android:background="@drawable/button_design1"
+        android:layout_marginBottom="3dp"
+        android:layout_marginLeft="3dp"
+        android:layout_marginRight="3dp"
+        android:onClick="processCreateOperation"
+        app:layout_constraintBottom_toBottomOf="parent" />
+
+</android.support.constraint.ConstraintLayout>

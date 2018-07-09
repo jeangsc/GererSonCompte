@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/background_design1"
+    tools:context="com.example.jean.gerersoncompte.MenuActivity">
+
+    <TextView
+        android:id="@+id/men_value_nom"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="36dp"
+        android:text="@string/value_compte_defaut"
+        android:textColor="@color/colorBlack"
+        android:textSize="30sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/men_label_solde"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="25dp"
+        android:layout_marginTop="90dp"
+        android:text="@string/label_solde"
+        android:textColor="@color/colorBlack"
+        android:textSize="20sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" android:layout_marginStart="25dp" />
+
+    <TextView
+        android:id="@+id/men_value_solde"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:text="@string/value_solde_defaut"
+        android:textColor="@color/colorBlack"
+        android:textSize="40sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/men_label_solde" />
+
+    <Button
+        android:id="@+id/men_bouton_compte"
+        android:layout_width="300dp"
+        android:layout_height="60dp"
+        android:background="@drawable/button_design1"
+        android:onClick="processButtonCompte"
+        android:text="@string/boutton_resume_compte"
+        android:textColor="@color/colorWhite"
+        android:textSize="20sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.648" />
+
+    <Button
+        android:id="@+id/men_bouton_operations"
+        android:layout_width="300dp"
+        android:layout_height="60dp"
+        android:layout_marginTop="8dp"
+        android:background="@drawable/button_design1"
+        android:text="@string/boutton_gerer_operations"
+        android:textColor="@color/colorWhite"
+        android:textSize="20sp"
+        android:onClick="processButtonOperations"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/men_bouton_compte"
+        app:layout_constraintVertical_bias="0.03" />
+
+    <Button
+        android:id="@+id/men_bouton_comptes"
+        android:layout_width="300dp"
+        android:layout_height="60dp"
+        android:layout_marginTop="8dp"
+        android:background="@drawable/button_design1"
+        android:text="@string/label_comptes"
+        android:textColor="@color/colorWhite"
+        android:textSize="20sp"
+        android:onClick="processButtonComptes"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/men_bouton_operations"
+        app:layout_constraintVertical_bias="0.03" />
+
+
+</android.support.constraint.ConstraintLayout>
