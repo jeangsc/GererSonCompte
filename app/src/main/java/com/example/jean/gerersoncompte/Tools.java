@@ -208,6 +208,15 @@ public class Tools
         return Normalizer.normalize(str, Normalizer.Form.NFD).replaceAll("\\p{InCombiningDiacriticalMarks}+", "");
     }
 
+    public static int compareDates(String date1, String date2)
+    {
+        if(date1.length() != 10 || date2.length() != 10)
+            return 0;
+        String format1 = date1.substring(6, 10) + date1.substring(3, 5) + date1.substring(0, 2);
+        String format2 = date2.substring(6, 10) + date2.substring(3, 5) + date2.substring(0, 2);
+        return format1.compareTo(format2);
+    }
+
     /*public static void initEditTextFocus(EditText editText, TextInputLayout textInputLayout, String textFocus, String textNoFocus)
     {
         editText.setOnFocusChangeListener(new View.OnFocusChangeListener() {

@@ -25,5 +25,13 @@
     <string name="value_date_default">01/01/2018</string>
     <string name="appwidget_text">EXAMPLE</string>
     <string name="add_widget">Add widget</string>
+    <string name="valider">Valider</string>
+    <string name="annuler">Annuler</string>
+    <string name="croissant">Croissant</string>
+    <string name="decroissant">Décroissant</string>
+    <string name="noms">Noms</string>
+    <string name="categories">Catégories</string>
+    <string name="montants">Montants</string>
+    <string name="dates_d_execution">Dates d\'exécution</string>
 
 </resources>

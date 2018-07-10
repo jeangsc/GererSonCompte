@@ -3,11 +3,21 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <Button
+    <TextView
         android:id="@+id/dia_ope_fil_montant"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Montant"
+        android:text="Montants compris entre:"
+        android:textColor="@color/colorBlack"
+        android:textSize="20sp" />
+
+
+
+    <TextView
+        android:id="@+id/dia_ope_fil_execdate"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Dates d'exécution comprises entre:"
         android:textColor="@color/colorBlack"
         android:textSize="20sp" />
 

@@ -1,6 +1,8 @@
 package com.example.jean.gerersoncompte;
 
+import android.app.AlertDialog;
 import android.app.Dialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
@@ -20,15 +22,16 @@ import java.util.ArrayList;
 
 public class OperationsManagerActivity extends AppCompatActivity
 {
-    private ListView operationsList = null;
-    private SearchView operationSearcher = null;
-
     private final static String extraAccount = "EXTRA_ACCOUNT";
     private final static int requestNewOperation = 1;
+
+    private ListView operationsList = null;
+    private SearchView operationSearcher = null;
 
     private Account account = null;
     private int selectedOperation = -1;
     private View selectedView = null;
+    private int selectedSortField = -1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -129,26 +132,6 @@ public class OperationsManagerActivity extends AppCompatActivity
         showDialog(2);
     }
 
-    public void processSortByName(View view)
-    {
-        Log.i("Sort", "Name");
-    }
-
-    public void processSortByCategory(View view)
-    {
-        Log.i("Sort", "Category");
-    }
-
-    public void processSortByAmount(View view)
-    {
-        Log.i("Sort", "Amount");
-    }
-
-    public void processSortByExecDate(View view)
-    {
-        Log.i("Sort", "ExecDate");
-    }
-
     public void processModifyOperation()
     {
 
@@ -196,22 +179,83 @@ public class OperationsManagerActivity extends AppCompatActivity
     @Override
     public Dialog onCreateDialog(int id)
     {
-        Dialog menu = null;
+        AlertDialog.Builder builder = null;
         switch(id)
         {
             case 1:
-                menu = new Dialog(this);
-                menu.setTitle("Filtrer par");
-                menu.setContentView(R.layout.dialog_operation_filter);
                 break;
 
             case 2:
-                menu = new Dialog(this);
-                menu.setTitle("Trier par");
-                menu.setContentView(R.layout.dialog_operation_sort);
+                OperationAdapter adapter = (OperationAdapter) operationsList.getAdapter();
+                selectedSortField = adapter != null ? adapter.getSortField() : -1;
+                String[] items = getResources().getStringArray(R.array.sort_operation_list);
+
+                builder = new AlertDialog.Builder(this, AlertDialog.THEME_TRADITIONAL);
+                builder.setTitle("Trier par");
+                builder.setSingleChoiceItems(items, selectedSortField, new OnSortSelectListener());
+                builder.setCancelable(true);
+                builder.setPositiveButton(R.string.croissant, new OnSortAscListener());
+                builder.setNegativeButton(R.string.decroissant, new OnSortDescListener());
+                builder.setOnCancelListener(new OnSortCancelListener());
                 break;
         }
-        return menu;
+
+        if(builder != null)
+        {
+            AlertDialog dialog = builder.create();
+            dialog.show();
+        }
+        return super.onCreateDialog(id);
+    }
+
+    private class OnSortSelectListener implements DialogInterface.OnClickListener
+    {
+        @Override
+        public void onClick(DialogInterface dialog, int which)
+        {
+            String[] items = getResources().getStringArray(R.array.sort_operation_list);
+            OperationAdapter adapter = (OperationAdapter) operationsList.getAdapter();
+            selectedSortField = which;
+        }
+    }
+
+    private class OnSortAscListener implements DialogInterface.OnClickListener
+    {
+        @Override
+        public void onClick(DialogInterface dialog, int which)
+        {
+            OperationAdapter adapter = (OperationAdapter) operationsList.getAdapter();
+            if(adapter != null)
+            {
+                if(selectedSortField != -1)
+                    adapter.setSortField(selectedSortField);
+                adapter.setSortAsc();
+                adapter.notifyDataSetChanged();
+            }
+        }
+    }
+
+    private class OnSortDescListener implements DialogInterface.OnClickListener
+    {
+        @Override
+        public void onClick(DialogInterface dialog, int which)
+        {
+            OperationAdapter adapter = (OperationAdapter) operationsList.getAdapter();
+            if(adapter != null)
+            {
+                adapter.setSortDesc();
+                adapter.notifyDataSetChanged();
+            }
+        }
+    }
+
+    private class OnSortCancelListener implements DialogInterface.OnCancelListener
+    {
+        @Override
+        public void onCancel(DialogInterface dialog)
+        {
+            selectedSortField = -1;
+        }
     }
 
     @Override

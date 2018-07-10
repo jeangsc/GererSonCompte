@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="sort_operation_list">
+        <item>@string/noms</item>
+        <item>@string/categories</item>
+        <item>@string/montants</item>
+        <item>@string/dates_d_execution</item>
+    </string-array>
+</resources>

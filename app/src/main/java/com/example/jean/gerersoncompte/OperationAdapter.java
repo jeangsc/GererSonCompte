@@ -1,6 +1,7 @@
 package com.example.jean.gerersoncompte;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,15 +21,30 @@ import java.util.List;
 
 public class OperationAdapter extends ArrayAdapter<Operation> implements Filterable
 {
+    public final static byte SORT_NAME     = 0;
+    public final static byte SORT_CATEGORY = 1;
+    public final static byte SORT_AMOUNT   = 2;
+    public final static byte SORT_EXECDATE = 3;
+
+    public final static byte SORT_ASC = 1;
+    public final static byte SORT_DESC = -1;
+
     private List<Operation> operations;
     private List<Operation> operationsAll;
-    OperationFilter operationFilter;
+    private OperationFilter operationFilter;
+    private int sortField;
+    private int sortSide;
+
+    private boolean updateSort;
 
     public OperationAdapter(Context context, List<Operation> list)
     {
         super(context,0, list);
         this.operations = list;
         this.operationsAll = list;
+        this.sortField = SORT_EXECDATE;
+        this.sortSide = SORT_ASC;
+        updateSort = true;
     }
 
     private static class ViewHolder
@@ -42,6 +58,7 @@ public class OperationAdapter extends ArrayAdapter<Operation> implements Filtera
     @Override
     public void remove(Operation object)
     {
+        updateSort = true;
         if(operations != operationsAll)
             operations.remove(object);
         super.remove(object);
@@ -50,6 +67,7 @@ public class OperationAdapter extends ArrayAdapter<Operation> implements Filtera
     @Override
     public void add(Operation object)
     {
+        updateSort = true;
         if(operations != operationsAll)
             operations.add(object);
         super.add(object);
@@ -58,6 +76,7 @@ public class OperationAdapter extends ArrayAdapter<Operation> implements Filtera
     @Override
     public void clear()
     {
+        updateSort = true;
         if(operations != operationsAll)
             operations.clear();
         super.clear();
@@ -139,10 +158,11 @@ public class OperationAdapter extends ArrayAdapter<Operation> implements Filtera
                 for (Operation operation : operationsAll)
                 {
                     String name = Tools.stripAccents(operation.getName().toLowerCase());
-                    if(constraint.length() > name.length())
+                    String constraintStr = Tools.stripAccents(constraint.toString().toLowerCase());
+                    if(constraintStr.length() > name.length())
                         continue;
 
-                    if(!name.substring(0, constraint.length()).equals(constraint))
+                    if(!name.substring(0, constraintStr.length()).equals(constraintStr))
                         continue;
 
                     filterList.add(operation);
@@ -161,6 +181,7 @@ public class OperationAdapter extends ArrayAdapter<Operation> implements Filtera
         @Override
         protected void publishResults(CharSequence constraint, FilterResults results)
         {
+            updateSort = true;
             operations = (ArrayList<Operation>) results.values;
             notifyDataSetChanged();
         }
@@ -169,17 +190,65 @@ public class OperationAdapter extends ArrayAdapter<Operation> implements Filtera
     @Override
     public void notifyDataSetChanged()
     {
-        this.setNotifyOnChange(false);
-        Collections.sort(operations, new Comparator<Operation>()
+        Log.i("FIELD SORT", String.valueOf(sortField));
+        Log.i("SIDE SORT", String.valueOf(sortSide));
+
+        if(updateSort)
         {
-            @Override
-            public int compare(Operation o1, Operation o2)
-            {
-                return o1.getExecDate().compareTo(o2.getExecDate());
-            }
-        });
-        this.setNotifyOnChange(true);
+            this.setNotifyOnChange(false);
+            Collections.sort(operations, new Comparator<Operation>() {
+                @Override
+                public int compare(Operation o1, Operation o2) {
+                    if (sortField == SORT_NAME)
+                        return (sortSide * o1.getName().compareTo(o2.getName()));
+                    if (sortField == SORT_CATEGORY)
+                        return (sortSide * o1.getCategory().compareTo(o2.getCategory()));
+                    if (sortField == SORT_AMOUNT) {
+                        int compareSide = o1.getSignedAmount() == o2.getSignedAmount() ? 0 :
+                                o1.getSignedAmount() > o2.getSignedAmount() ? 1 : -1;
+                        return sortSide * compareSide;
+                    }
+                    if (sortField == SORT_EXECDATE)
+                        return sortSide * Tools.compareDates(o1.getExecDate(), o2.getExecDate());
+                    return 0;
+                }
+            });
+            this.setNotifyOnChange(true);
+            updateSort = false;
+        }
         super.notifyDataSetChanged();
+    }
+
+    public void setSortField(int field)
+    {
+        if(sortField == field)
+            return;
+
+        updateSort = true;
+        sortField = field;
+    }
+
+    public int getSortField()
+    {
+        return sortField;
+    }
+
+    public void setSortAsc()
+    {
+        if(sortSide == SORT_ASC)
+            return;
+
+        updateSort = true;
+        sortSide = SORT_ASC;
+    }
+
+    public void setSortDesc()
+    {
+        if(sortSide == SORT_DESC)
+            return;
+
+        updateSort = true;
+        sortSide = SORT_DESC;
     }
 }
 
