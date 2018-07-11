@@ -9,4 +9,11 @@
         </attr>
         <attr name="textError" format="string" />
     </declare-styleable>
+    <declare-styleable name="SeekBarRange">
+        <attr name="minVal" format="float" />
+        <attr name="maxVal" format="float" />
+        <attr name="posLeft" format="float" />
+        <attr name="posRight" format="float" />
+        <attr name="nSteps" format="integer" />
+    </declare-styleable>
 </resources>
