@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/seek_bar_rng_vals_rlo"
+    android:layout_width="wrap_content"
+    android:layout_height="40dp">
+
+    <EditText
+        android:id="@+id/seek_bar_rng_vals_edit_left"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/edittext_design1"
+        android:ems="5"
+        android:imeOptions="actionDone"
+        android:textSize="18sp"
+        android:textAlignment="center"
+        android:inputType="numberSigned|numberDecimal"
+        android:textColor="@color/colorBlack"/>
+
+    <EditText
+        android:id="@+id/seek_bar_rng_vals_edit_right"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:background="@drawable/edittext_design1"
+        android:ems="5"
+        android:imeOptions="actionDone"
+        android:textSize="18sp"
+        android:textAlignment="center"
+        android:inputType="numberSigned|numberDecimal"
+        android:textColor="@color/colorBlack"/>
+
+    <com.example.jean.gerersoncompte.SeekBarRange
+        android:id="@+id/seek_bar_rng_vals_sbr"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/seek_bar_rng_vals_edit_left"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"/>
+</RelativeLayout>

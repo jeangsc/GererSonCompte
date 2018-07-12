@@ -217,6 +217,42 @@ public class Tools
         return format1.compareTo(format2);
     }
 
+    public static String floatFormat(float val, int decimals)
+    {
+        if(decimals <= 0)
+            return "";
+
+        String res = String.valueOf(val);
+        int end = res.indexOf(".");
+        int deltaDecimals = 0;
+        if(end == -1)
+        {
+            res += ".";
+            deltaDecimals = decimals;
+            /*
+            int occ = decimals;
+            while (occ > 0) {
+                res.concat("0");
+                occ--;
+            }
+            return res;*/
+        }
+        else
+            deltaDecimals = decimals - res.length() + end + 1;
+
+
+        while(deltaDecimals > 0)
+        {
+            res.concat("0");
+            deltaDecimals--;
+        }
+
+        if(deltaDecimals < 0)
+            res = res.substring(0, end + 1 + decimals);
+
+        return res;
+    }
+
     /*public static void initEditTextFocus(EditText editText, TextInputLayout textInputLayout, String textFocus, String textNoFocus)
     {
         editText.setOnFocusChangeListener(new View.OnFocusChangeListener() {

@@ -16,4 +16,10 @@
         <attr name="posRight" format="float" />
         <attr name="nSteps" format="integer" />
     </declare-styleable>
+    <declare-styleable name="SeekBarRangeValues">
+        <attr name="seekBarMinVal" format="float" />
+        <attr name="seekBarMaxVal" format="float" />
+        <attr name="seekBarPosLeft" format="float" />
+        <attr name="seekBarPosRight" format="float" />
+    </declare-styleable>
 </resources>

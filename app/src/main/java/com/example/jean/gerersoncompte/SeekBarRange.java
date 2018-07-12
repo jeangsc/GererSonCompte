@@ -5,7 +5,6 @@ import android.content.res.TypedArray;
 import android.graphics.Canvas;
 import android.graphics.drawable.Drawable;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 
@@ -16,9 +15,9 @@ public class SeekBarRange extends View
 {
     private final int wMin = 36;
     private final int hMin = 12;
-    private final byte FOCUS_NONE = 0;
-    private final byte FOCUS_LEFT = 1;
-    private final byte FOCUS_RIGHT = 2;
+    public static final byte FOCUS_CURSOR_NONE = 0;
+    public static final byte FOCUS_CURSOR_LEFT = 1;
+    public static final byte FOCUS_CURSOR_RIGHT = 2;
 
     private Drawable mCursor;
     private Drawable mHighLightRect;
@@ -38,6 +37,13 @@ public class SeekBarRange extends View
     private int xLeft;
     private int xRight;
     private int nSteps;
+
+    private OnChangeListener listener;
+
+    public interface OnChangeListener
+    {
+        public void onCursorChanged(int cursorFocused);
+    }
 
     public SeekBarRange(Context context)
     {
@@ -59,7 +65,8 @@ public class SeekBarRange extends View
 
     private void init(AttributeSet attrs, int defStyle)
     {
-        cursorFocused = FOCUS_NONE;
+        listener = null;
+        cursorFocused = FOCUS_CURSOR_NONE;
 
         mCursor = getResources().getDrawable(R.drawable.seek_bar_range_cursor);
         mHighLightRect = getResources().getDrawable(R.drawable.seek_bar_range_highlight);
@@ -77,10 +84,10 @@ public class SeekBarRange extends View
 
         a.recycle();
 
-        adjustAttrs();
+        adjustVal();
     }
 
-    private void adjustAttrs()
+    private void adjustVal()
     {
         if(minVal > maxVal)
         {
@@ -93,6 +100,11 @@ public class SeekBarRange extends View
             minVal -= 0.5f;
             maxVal += 0.5f;
         }
+        adjustPos();
+    }
+
+    private void adjustPos()
+    {
         if(posLeft < minVal)
             posLeft = minVal;
         else if(posLeft > maxVal)
@@ -108,20 +120,49 @@ public class SeekBarRange extends View
             float posTmp = posLeft;
             posLeft = posRight;
             posRight = posTmp;
+            swapFocus();
         }
-        nSteps = Math.max(2, nSteps);
+    }
+
+    private void adjustX()
+    {
+        if(xLeft < xMin)
+            xLeft = xMin;
+        else if(xLeft > xMax)
+            xLeft = xMax;
+
+        if(xRight < xMin)
+            xRight = xMin;
+        else if(xRight > xMax)
+            xRight = xMax;
+
+        if(xLeft > xRight)
+        {
+            int xTmp = xLeft;
+            xLeft = xRight;
+            xRight = xTmp;
+            swapFocus();
+        }
+    }
+
+    private void swapFocus()
+    {
+        if(cursorFocused == FOCUS_CURSOR_LEFT)
+            cursorFocused = FOCUS_CURSOR_RIGHT;
+        else if(cursorFocused == FOCUS_CURSOR_RIGHT)
+            cursorFocused = FOCUS_CURSOR_LEFT;
+    }
+
+    private void updatePos()
+    {
+        posLeft = xToPos(xLeft);
+        posRight = xToPos(xRight);
     }
 
     private void updateX()
     {
         xLeft = posToX(posLeft);
         xRight = posToX(posRight);
-    }
-
-    private void update()
-    {
-        adjustAttrs();
-        updateX();
     }
 
     @Override
@@ -139,7 +180,7 @@ public class SeekBarRange extends View
             hSize = 0;
 
         wSize = Math.max(wMin, wSize);
-        hSize = Math.max(hMin, hSize);
+        hSize = Math.min(Math.max(hMin, hSize), wSize/2);
 
         cursorDimension = hSize;
         barHeight = cursorDimension / 4;
@@ -200,56 +241,112 @@ public class SeekBarRange extends View
         switch (event.getAction()) {
             case MotionEvent.ACTION_DOWN:
             {
-                Log.i("ACTION", "DOWN");
-                return checkFocus(event.getX(), event.getY());
+                return checkFocus((int)event.getX());
             }
             case MotionEvent.ACTION_UP:
             {
-                Log.i("ACTION", "UP");
+                //Log.i("ACTION", "UP");
                 return processEndCursor();
             }
             case MotionEvent.ACTION_MOVE:
             {
-                Log.i("ACTION", "MOVE");
-                return processMoveCursor(event.getX(), event.getY());
+                return processMoveCursor((int)event.getX());
             }
         }
         return false;
     }
 
-    private boolean checkFocus(float x, float y)
+    private boolean checkFocus(int x)
     {
-        if(cursorFocused != FOCUS_NONE)
+        if(cursorFocused != FOCUS_CURSOR_NONE)
             return false;
 
+        if(x <= xLeft)
+            cursorFocused = FOCUS_CURSOR_LEFT;
+        else if(x >= xRight)
+            cursorFocused = FOCUS_CURSOR_RIGHT;
+        else if(x - xLeft < xRight - x)
+            cursorFocused = FOCUS_CURSOR_LEFT;
+        else
+            cursorFocused = FOCUS_CURSOR_RIGHT;
+
+        processMoveCursor(x);
         return true;
     }
 
-    private boolean processMoveCursor(float x, float y)
+    private boolean processMoveCursor(int x)
     {
-        if(cursorFocused == FOCUS_NONE)
+        if(cursorFocused == FOCUS_CURSOR_NONE)
             return false;
+
+        boolean hasEventCursorChanged = false;
+        if(cursorFocused == FOCUS_CURSOR_LEFT)
+            hasEventCursorChanged = setxLeft(x);
+
+        else if(cursorFocused == FOCUS_CURSOR_RIGHT)
+            hasEventCursorChanged = setxRight(x);
+
+        if(hasEventCursorChanged && listener != null)
+            listener.onCursorChanged(cursorFocused);
 
         return true;
     }
 
     private boolean processEndCursor()
     {
-        if(cursorFocused == FOCUS_NONE)
+        if(cursorFocused == FOCUS_CURSOR_NONE)
             return false;
 
-        cursorFocused = FOCUS_NONE;
+        cursorFocused = FOCUS_CURSOR_NONE;
         return true;
     }
 
     public int posToX(float pos)
     {
-        return (xMin + (int)((pos - minVal) * (float)(xMax - xMin)/ (maxVal - minVal)));
+        if(pos == minVal)
+            return xMin;
+
+        if(pos == maxVal)
+            return xMax;
+
+        return (xMin + Math.round((pos - minVal) * (float)(xMax - xMin)/ (maxVal - minVal)));
     }
 
     public float xToPos(int x)
     {
+        if(x == xMin)
+            return minVal;
+
+        if(x == xMax)
+            return maxVal;
+
         return (minVal + (float)(x - xMin) * (maxVal - minVal) / (float)(xMax - xMin));
+    }
+
+    private boolean setxLeft(int x)
+    {
+        if(x == xLeft)
+            return false;
+
+        xLeft = Math.min(x, xRight);
+        adjustX();
+        updatePos();
+        invalidate();
+
+        return true;
+    }
+
+    private boolean setxRight(int x)
+    {
+        if(x == xRight)
+            return false;
+
+        xRight = Math.max(x, xLeft);
+        adjustX();
+        updatePos();
+        invalidate();
+
+        return true;
     }
 
     public float getMinVal(){
@@ -257,8 +354,13 @@ public class SeekBarRange extends View
     }
 
     public void setMinVal(float minVal){
+        if(this.minVal == minVal)
+            return;
+
         this.minVal = minVal;
-        update();
+        adjustVal();
+        updateX();
+        invalidate();
     }
 
     public float getMaxVal() {
@@ -266,8 +368,13 @@ public class SeekBarRange extends View
     }
 
     public void setMaxVal(float maxVal) {
+        if(this.maxVal == maxVal)
+            return;
+
         this.maxVal = maxVal;
-        update();
+        adjustVal();
+        updateX();
+        invalidate();
     }
 
     public float getPosLeft() {
@@ -275,8 +382,13 @@ public class SeekBarRange extends View
     }
 
     public void setPosLeft(float posLeft) {
+        if(this.posLeft == posLeft)
+            return;
+
         this.posLeft = posLeft;
-        update();
+        adjustPos();
+        updateX();
+        invalidate();
     }
 
     public float getPosRight() {
@@ -284,8 +396,13 @@ public class SeekBarRange extends View
     }
 
     public void setPosRight(float posRight) {
+        if(this.posRight == posRight)
+            return;
+
         this.posRight = posRight;
-        update();
+        adjustPos();
+        updateX();
+        invalidate();
     }
 
     public int getnSteps() {
@@ -293,6 +410,11 @@ public class SeekBarRange extends View
     }
 
     public void setnSteps(int nSteps) {
-        this.nSteps = Math.max(2, nSteps);
+        this.nSteps = nSteps;
+    }
+
+    public void setOnChangeListener(OnChangeListener listener)
+    {
+        this.listener = listener;
     }
 }

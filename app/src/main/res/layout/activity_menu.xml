@@ -5,6 +5,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/background_design1"
+    android:focusable="true"
+    android:focusableInTouchMode="true"
     tools:context="com.example.jean.gerersoncompte.MenuActivity">
 
     <TextView
@@ -91,17 +93,15 @@
         app:layout_constraintTop_toBottomOf="@+id/men_bouton_operations"
         app:layout_constraintVertical_bias="0.03" />
 
-    <com.example.jean.gerersoncompte.SeekBarRange
+    <com.example.jean.gerersoncompte.SeekBarRangeValues
         android:layout_width="300dp"
-        android:layout_height="20dp"
+        android:layout_height="60dp"
         android:layout_marginBottom="68dp"
         android:layout_marginLeft="60dp"
         app:layout_constraintBottom_toTopOf="@+id/men_bouton_compte"
         app:layout_constraintStart_toStartOf="parent"
-        app:maxVal="1000"
-        app:minVal="0"
-        app:posLeft="150"
-        app:posRight="900" />
+        app:seekBarMinVal="0"
+        app:seekBarMaxVal="12345" />
 
 
 </android.support.constraint.ConstraintLayout>

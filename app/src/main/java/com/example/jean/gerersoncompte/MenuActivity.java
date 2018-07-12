@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.TextView;
 
@@ -182,5 +183,12 @@ public class MenuActivity extends AppCompatActivity
         {
             e.printStackTrace();
         }
+    }
+
+    @Override
+    public boolean dispatchTouchEvent(MotionEvent event)
+    {
+        Tools.autoClearFocus(this, event);
+        return super.dispatchTouchEvent( event );
     }
 }
