@@ -93,7 +93,7 @@
         app:layout_constraintTop_toBottomOf="@+id/men_bouton_operations"
         app:layout_constraintVertical_bias="0.03" />
 
-    <com.example.jean.gerersoncompte.SeekBarRangeValues
+    <!--com.example.jean.gerersoncompte.SeekBarRangeValues
         android:layout_width="300dp"
         android:layout_height="60dp"
         android:layout_marginBottom="68dp"
@@ -101,7 +101,7 @@
         app:layout_constraintBottom_toTopOf="@+id/men_bouton_compte"
         app:layout_constraintStart_toStartOf="parent"
         app:seekBarMinVal="0"
-        app:seekBarMaxVal="12345" />
+        app:seekBarMaxVal="12345" /-->
 
 
 </android.support.constraint.ConstraintLayout>

@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@color/colorWhite">
 
     <TextView
         android:id="@+id/dia_ope_fil_montant"
@@ -11,14 +12,42 @@
         android:textColor="@color/colorBlack"
         android:textSize="20sp" />
 
-
+    <com.example.jean.gerersoncompte.SeekBarRangeValues
+        android:id="@+id/dia_ope_fil_sbr_montant"
+        android:layout_below="@id/dia_ope_fil_montant"
+        android:layout_marginTop="10dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
 
     <TextView
         android:id="@+id/dia_ope_fil_execdate"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_below="@id/dia_ope_fil_sbr_montant"
+        android:layout_marginTop="30dp"
         android:text="Dates d'exécution comprises entre:"
         android:textColor="@color/colorBlack"
         android:textSize="20sp" />
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/dia_ope_fil_execdate"
+        android:layout_marginTop="10dp">
+
+        <com.example.jean.gerersoncompte.EditTextDate
+            android:id="@+id/dia_ope_fil_edit_date_begin"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+        <com.example.jean.gerersoncompte.EditTextDate
+            android:id="@+id/dia_ope_fil_edit_date_end"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@id/dia_ope_fil_edit_date_begin"
+            android:layout_marginLeft="20dp"/>
+
+
+    </RelativeLayout>
 
 </RelativeLayout>

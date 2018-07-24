@@ -2,6 +2,7 @@ package com.example.jean.gerersoncompte;
 
 import android.app.DatePickerDialog;
 import android.content.Context;
+import android.content.res.TypedArray;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.AttributeSet;
@@ -136,16 +137,22 @@ public class EditTextDate extends RelativeLayout
     public EditTextDate(Context context)
     {
         super(context);
-        init();
+        init(null, 0);
     }
 
     public EditTextDate(Context context, AttributeSet attrs)
     {
         super(context, attrs);
-        init();
+        init(attrs, 0);
     }
 
-    private void init()
+    public EditTextDate(Context context, AttributeSet attrs, int defStyleAttr)
+    {
+        super(context, attrs, defStyleAttr);
+        init(attrs, defStyleAttr);
+    }
+
+    private void init(AttributeSet attrs, int defStyleAttr)
     {
         View view = LayoutInflater.from(getContext()).inflate(R.layout.edit_text_date, this, true);
 
@@ -187,6 +194,17 @@ public class EditTextDate extends RelativeLayout
                 dialog.show();
             }
         });
+
+        // Load attributes
+        final TypedArray a = getContext().obtainStyledAttributes(
+                attrs, R.styleable.EditTextDate, 0, 0);
+        int size = a.getInteger(R.styleable.EditTextDate_editDateSize, 100);
+        if(size != 100)
+        {
+
+        }
+
+        a.recycle();
     }
 
     public String getDate()

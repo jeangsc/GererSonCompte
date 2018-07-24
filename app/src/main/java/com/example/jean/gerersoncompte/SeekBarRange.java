@@ -385,7 +385,7 @@ public class SeekBarRange extends View
         if(this.posLeft == posLeft)
             return;
 
-        this.posLeft = posLeft;
+        this.posLeft = Math.min(posLeft, posRight);
         adjustPos();
         updateX();
         invalidate();
@@ -399,6 +399,18 @@ public class SeekBarRange extends View
         if(this.posRight == posRight)
             return;
 
+        this.posRight = Math.max(posRight, posLeft);
+        adjustPos();
+        updateX();
+        invalidate();
+    }
+
+    public void setPos(float posLeft, float posRight)
+    {
+        if(this.posLeft == posLeft && this.posRight == posRight)
+            return;
+
+        this.posLeft = posLeft;
         this.posRight = posRight;
         adjustPos();
         updateX();

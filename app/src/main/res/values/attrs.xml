@@ -22,4 +22,7 @@
         <attr name="seekBarPosLeft" format="float" />
         <attr name="seekBarPosRight" format="float" />
     </declare-styleable>
+    <declare-styleable name="EditTextDate">
+        <attr name="editDateSize" format="integer" />
+    </declare-styleable>
 </resources>

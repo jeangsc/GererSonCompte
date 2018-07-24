@@ -48,7 +48,7 @@ public class SeekBarRangeValues extends RelativeLayout
 
         // Load attributes
         final TypedArray a = getContext().obtainStyledAttributes(
-                attrs, R.styleable.SeekBarRange, defStyle, 0);
+                attrs, R.styleable.SeekBarRangeValues, defStyle, 0);
 
         seekBar.setMinVal(a.getFloat(R.styleable.SeekBarRangeValues_seekBarMinVal, 0.0f));
         seekBar.setMaxVal(a.getFloat(R.styleable.SeekBarRangeValues_seekBarMaxVal, 100.0f));

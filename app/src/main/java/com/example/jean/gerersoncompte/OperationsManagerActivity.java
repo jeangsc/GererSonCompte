@@ -9,6 +9,7 @@ import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.ContextMenu;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -22,6 +23,8 @@ import java.util.ArrayList;
 
 public class OperationsManagerActivity extends AppCompatActivity
 {
+    private final static int MENU_FILTER = 1;
+    private final static int MENU_SORT = 2;
     private final static String extraAccount = "EXTRA_ACCOUNT";
     private final static int requestNewOperation = 1;
 
@@ -124,12 +127,12 @@ public class OperationsManagerActivity extends AppCompatActivity
 
     public void processFilterOperations(View view)
     {
-        showDialog(1);
+        showDialog(MENU_FILTER);
     }
 
     public void processSortOperations(View view)
     {
-        showDialog(2);
+        showDialog(MENU_SORT);
     }
 
     public void processModifyOperation()
@@ -182,10 +185,16 @@ public class OperationsManagerActivity extends AppCompatActivity
         AlertDialog.Builder builder = null;
         switch(id)
         {
-            case 1:
+            case MENU_FILTER: {
+                View view = getLayoutInflater().inflate(R.layout.dialog_operation_filter, null);
+                builder = new AlertDialog.Builder(this, AlertDialog.THEME_TRADITIONAL);
+                builder.setTitle("Filtrer par");
+                builder.setCancelable(true);
+                builder.setView(view);
                 break;
+            }
 
-            case 2:
+            case MENU_SORT: {
                 OperationAdapter adapter = (OperationAdapter) operationsList.getAdapter();
                 selectedSortField = adapter != null ? adapter.getSortField() : -1;
                 String[] items = getResources().getStringArray(R.array.sort_operation_list);
@@ -198,6 +207,7 @@ public class OperationsManagerActivity extends AppCompatActivity
                 builder.setNegativeButton(R.string.decroissant, new OnSortDescListener());
                 builder.setOnCancelListener(new OnSortCancelListener());
                 break;
+            }
         }
 
         if(builder != null)
