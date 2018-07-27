@@ -19,7 +19,9 @@ import static android.content.ContentValues.TAG;
 
 public class EditTextDate extends RelativeLayout
 {
-    private final String strDateDefault = "__/__/____";
+    public static final String DATE_DEFAULT = "__/__/____";
+    public static final String DATE_MIN = "01/01/1900";
+    public static final String DATE_MAX = "31/12/9999";
 
     private EditTextErrorChecker editDate = null;
     private ImageButton buttonDate = null;
@@ -36,7 +38,7 @@ public class EditTextDate extends RelativeLayout
         {
             this.selector = 0;
             this.forceChange = false;
-            this.strDate = editDate != null ? editDate.getText().toString() : strDateDefault;
+            this.strDate = editDate != null ? editDate.getText().toString() : DATE_DEFAULT;
         }
 
         public void setForceChange(boolean forceChange)
@@ -73,7 +75,7 @@ public class EditTextDate extends RelativeLayout
                 boolean isNewInsertion = i < start + count;
                 if(!isNewInsertion && newErased > 0)
                 {
-                    strDate += strDateDefault.charAt(strDateLength);
+                    strDate += DATE_DEFAULT.charAt(strDateLength);
                     strDateLength++;
                     newErased--;
                 }
@@ -105,7 +107,7 @@ public class EditTextDate extends RelativeLayout
 
             while(strDateLength < 10)
             {
-                strDate += strDateDefault.charAt(strDateLength);
+                strDate += DATE_DEFAULT.charAt(strDateLength);
                 strDateLength++;
             }
         }
@@ -186,30 +188,36 @@ public class EditTextDate extends RelativeLayout
                         dateTextWatcher.setForceChange(false);
                     }
                 };
-                Calendar calendar = Calendar.getInstance();
-                int year = calendar.get(Calendar.YEAR);
-                int month = calendar.get(Calendar.MONTH);
-                int day = calendar.get(Calendar.DAY_OF_MONTH);
+                int year, month, day;
+                String strDate = getDate();
+                if(dateExists(strDate))
+                {
+                    year = Tools.getYear(strDate);
+                    month = Tools.getMonth(strDate)-1;
+                    day = Tools.getDay(strDate);
+                }
+                else
+                {
+                    Calendar calendar = Calendar.getInstance();
+                    year = calendar.get(Calendar.YEAR);
+                    month = calendar.get(Calendar.MONTH);
+                    day = calendar.get(Calendar.DAY_OF_MONTH);
+                }
                 DatePickerDialog dialog = new DatePickerDialog(getContext(), dateSetListener, year, month, day);
                 dialog.show();
             }
         });
-
-        // Load attributes
-        final TypedArray a = getContext().obtainStyledAttributes(
-                attrs, R.styleable.EditTextDate, 0, 0);
-        int size = a.getInteger(R.styleable.EditTextDate_editDateSize, 100);
-        if(size != 100)
-        {
-
-        }
-
-        a.recycle();
     }
 
     public String getDate()
     {
         return (editDate != null) ? editDate.getText().toString() : "";
+    }
+
+    public void setDate(String date)
+    {
+        if(editDate != null)
+            editDate.setText(date);
     }
 
     private static boolean checkFormat(String strDate)

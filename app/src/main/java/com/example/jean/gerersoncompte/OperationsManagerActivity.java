@@ -9,7 +9,6 @@ import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.ContextMenu;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -113,6 +112,7 @@ public class OperationsManagerActivity extends AppCompatActivity
 
             adapter.add(operation);
         }
+        adapter.updateFilterFields();
         adapter.notifyDataSetChanged();
     }
 
@@ -182,15 +182,18 @@ public class OperationsManagerActivity extends AppCompatActivity
     @Override
     public Dialog onCreateDialog(int id)
     {
-        AlertDialog.Builder builder = null;
+        GSCDialog.GSCBuilder builder = null;
         switch(id)
         {
             case MENU_FILTER: {
                 View view = getLayoutInflater().inflate(R.layout.dialog_operation_filter, null);
-                builder = new AlertDialog.Builder(this, AlertDialog.THEME_TRADITIONAL);
+                initFilter(view);
+                builder = new GSCDialog.GSCBuilder(this, AlertDialog.THEME_TRADITIONAL);
                 builder.setTitle("Filtrer par");
                 builder.setCancelable(true);
                 builder.setView(view);
+                builder.setPositiveButton(R.string.appliquer, new OnApplyFieldsFilter());
+                builder.setNegativeButton(R.string.annuler, null);
                 break;
             }
 
@@ -199,7 +202,7 @@ public class OperationsManagerActivity extends AppCompatActivity
                 selectedSortField = adapter != null ? adapter.getSortField() : -1;
                 String[] items = getResources().getStringArray(R.array.sort_operation_list);
 
-                builder = new AlertDialog.Builder(this, AlertDialog.THEME_TRADITIONAL);
+                builder = new GSCDialog.GSCBuilder(this, AlertDialog.THEME_TRADITIONAL);
                 builder.setTitle("Trier par");
                 builder.setSingleChoiceItems(items, selectedSortField, new OnSortSelectListener());
                 builder.setCancelable(true);
@@ -212,10 +215,58 @@ public class OperationsManagerActivity extends AppCompatActivity
 
         if(builder != null)
         {
-            AlertDialog dialog = builder.create();
+            GSCDialog dialog = builder.create();
+
             dialog.show();
         }
         return super.onCreateDialog(id);
+    }
+
+    private void initFilter(View view)
+    {
+        SeekBarRangeValues seekBarAmounts = (SeekBarRangeValues) view.findViewById(R.id.dia_ope_fil_sbr_montant);
+        EditTextDate startExecDate = (EditTextDate) view.findViewById(R.id.dia_ope_fil_edit_date_begin);
+        EditTextDate endExecDate = (EditTextDate) view.findViewById(R.id.dia_ope_fil_edit_date_end);
+
+        OperationAdapter adapter = (OperationAdapter) operationsList.getAdapter();
+        if(adapter != null)
+        {
+            OperationAdapter.FilterFields fields = adapter.getFilterFields();
+            seekBarAmounts.setMinVal(fields.minAmount);
+            seekBarAmounts.setMaxVal(fields.maxAmount);
+            seekBarAmounts.setPos(fields.startAmount, fields.endAmount);
+
+            startExecDate.setDate(fields.startExecDate);
+            endExecDate.setDate(fields.endExecDate);
+        }
+    }
+
+    private class OnApplyFieldsFilter implements DialogInterface.OnClickListener
+    {
+        @Override
+        public void onClick(DialogInterface dialog, int which)
+        {
+            AlertDialog alertDialog = (AlertDialog)dialog;
+
+            SeekBarRangeValues seekBarAmounts = (SeekBarRangeValues) alertDialog.findViewById(R.id.dia_ope_fil_sbr_montant);
+            EditTextDate startExecDate = (EditTextDate) alertDialog.findViewById(R.id.dia_ope_fil_edit_date_begin);
+            EditTextDate endExecDate = (EditTextDate) alertDialog.findViewById(R.id.dia_ope_fil_edit_date_end);
+
+            OperationAdapter adapter = (OperationAdapter) operationsList.getAdapter();
+            if(adapter != null)
+            {
+                OperationAdapter.FilterFields fields = adapter.getFilterFields();
+                fields.startAmount = Tools.floatTruncated(seekBarAmounts.getPosLeft(), 2);
+                fields.endAmount = Tools.floatTruncated(seekBarAmounts.getPosRight(), 2);
+
+                String strSED = startExecDate.getDate();
+                String strEED = endExecDate.getDate();
+                fields.startExecDate = EditTextDate.dateExists(strSED) ? strSED : EditTextDate.DATE_DEFAULT;
+                fields.endExecDate = EditTextDate.dateExists(strEED) ? strEED : EditTextDate.DATE_DEFAULT;
+
+                adapter.applyFilterFields();
+            }
+        }
     }
 
     private class OnSortSelectListener implements DialogInterface.OnClickListener
@@ -253,6 +304,8 @@ public class OperationsManagerActivity extends AppCompatActivity
             OperationAdapter adapter = (OperationAdapter) operationsList.getAdapter();
             if(adapter != null)
             {
+                if(selectedSortField != -1)
+                    adapter.setSortField(selectedSortField);
                 adapter.setSortDesc();
                 adapter.notifyDataSetChanged();
             }

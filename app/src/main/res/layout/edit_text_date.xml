@@ -14,7 +14,6 @@
         android:singleLine="true"
         android:text="__/__/____"
         android:textColor="@color/colorBlack"
-        android:textSize="22sp"
         app:filter="filterDateExists"
         app:textError="Date inexistante!"/>
 

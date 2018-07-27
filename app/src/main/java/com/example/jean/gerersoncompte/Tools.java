@@ -203,6 +203,27 @@ public class Tools
         }
     }
 
+    public static void autoClearFocus(GSCDialog dialog, MotionEvent event)
+    {
+        if (event.getAction() == MotionEvent.ACTION_DOWN)
+        {
+            View v = dialog.getCurrentFocus();
+            if (v instanceof EditText || v instanceof EditTextErrorChecker)
+            {
+                Rect outRect = new Rect();
+                v.getGlobalVisibleRect(outRect);
+                if (!outRect.contains((int)event.getRawX(), (int)event.getRawY()))
+                {
+                    v.clearFocus();
+                    InputMethodManager imm = (InputMethodManager) dialog.getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
+                    imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
+                }
+            }
+        }
+    }
+
+
+
     public static String stripAccents(String str)
     {
         return Normalizer.normalize(str, Normalizer.Form.NFD).replaceAll("\\p{InCombiningDiacriticalMarks}+", "");
@@ -217,6 +238,27 @@ public class Tools
         return format1.compareTo(format2);
     }
 
+    public static int getYear(String date)
+    {
+        if(date.length() < 10)
+            return -1;
+        return Integer.valueOf(date.substring(6, 10));
+    }
+
+    public static int getMonth(String date)
+    {
+        if(date.length() < 5)
+            return -1;
+        return Integer.valueOf(date.substring(3, 5));
+    }
+
+    public static int getDay(String date)
+    {
+        if(date.length() < 2)
+            return -1;
+        return Integer.valueOf(date.substring(0, 2));
+    }
+
     public static String floatFormat(float val, int decimals)
     {
         if(decimals <= 0)
@@ -224,5 +266,11 @@ public class Tools
 
         String valFormat = "%." + String.valueOf(decimals)+ "f";
         return String.format(valFormat, val).replace(',', '.');
+    }
+
+    public static float floatTruncated(float val, int decimals)
+    {
+        String strVal = floatFormat(val, decimals);
+        return Float.valueOf(strVal);
     }
 }

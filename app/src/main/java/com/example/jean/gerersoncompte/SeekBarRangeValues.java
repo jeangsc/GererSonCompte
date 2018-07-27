@@ -11,6 +11,8 @@ import android.widget.EditText;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import java.math.BigDecimal;
+
 /**
  * Created by V17 on 12/07/2018.
  */
@@ -141,5 +143,32 @@ public class SeekBarRangeValues extends RelativeLayout
             seekBar.setPosRight(newValue);
             editRight.setText(Tools.floatFormat(seekBar.getPosRight(), 2));
         }
+    }
+
+    public void setMinVal(float val)
+    {
+        seekBar.setMinVal(val);
+    }
+
+    public void setMaxVal(float val)
+    {
+        seekBar.setMaxVal(val);
+    }
+
+    public void setPos(float lVal, float rVal)
+    {
+        seekBar.setPos(lVal, rVal);
+        editLeft.setText(Tools.floatFormat(seekBar.getPosLeft(), 2));
+        editRight.setText(Tools.floatFormat(seekBar.getPosRight(), 2));
+    }
+
+    public float getPosLeft()
+    {
+        return seekBar.getPosLeft();
+    }
+
+    public float getPosRight()
+    {
+        return seekBar.getPosRight();
     }
 }

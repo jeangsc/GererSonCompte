@@ -2,7 +2,9 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/colorWhite">
+    android:background="@color/colorWhite"
+    android:focusable="true"
+    android:focusableInTouchMode="true">
 
     <TextView
         android:id="@+id/dia_ope_fil_montant"
@@ -38,14 +40,15 @@
         <com.example.jean.gerersoncompte.EditTextDate
             android:id="@+id/dia_ope_fil_edit_date_begin"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
+            android:layout_height="wrap_content" />
 
         <com.example.jean.gerersoncompte.EditTextDate
             android:id="@+id/dia_ope_fil_edit_date_end"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_toRightOf="@id/dia_ope_fil_edit_date_begin"
-            android:layout_marginLeft="20dp"/>
+            android:layout_alignParentRight="true"
+            android:layout_marginLeft="20dp"
+            android:layout_toRightOf="@id/dia_ope_fil_edit_date_begin" />
 
 
     </RelativeLayout>

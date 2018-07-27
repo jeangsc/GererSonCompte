@@ -31,19 +31,24 @@ public class OperationAdapter extends ArrayAdapter<Operation> implements Filtera
 
     private List<Operation> operations;
     private List<Operation> operationsAll;
+
     private OperationFilter operationFilter;
+    private FilterFields filterFields;
+    private CharSequence searchSeq;
     private int sortField;
     private int sortSide;
-
     private boolean updateSort;
 
     public OperationAdapter(Context context, List<Operation> list)
     {
         super(context,0, list);
-        this.operations = list;
-        this.operationsAll = list;
-        this.sortField = SORT_EXECDATE;
-        this.sortSide = SORT_ASC;
+        operations = list;
+        operationsAll = list;
+        operationFilter = null;
+        filterFields = new FilterFields();
+        searchSeq = null;
+        sortField = SORT_EXECDATE;
+        sortSide = SORT_ASC;
         updateSort = true;
     }
 
@@ -55,6 +60,70 @@ public class OperationAdapter extends ArrayAdapter<Operation> implements Filtera
         TextView textExecDate;
     }
 
+    public class FilterFields
+    {
+        //filter amount
+        float minAmount;
+        float maxAmount;
+        float startAmount;
+        float endAmount;
+
+        //filter dates
+        String startExecDate;
+        String endExecDate;
+
+        FilterFields()
+        {
+            reset();
+            startAmount = minAmount;
+            endAmount = maxAmount;
+
+            startExecDate = EditTextDate.DATE_DEFAULT;
+            endExecDate = EditTextDate.DATE_DEFAULT;
+        }
+
+        void reset()
+        {
+            minAmount = -10.0f;
+            maxAmount = 10.0f;
+        }
+    }
+
+    public FilterFields getFilterFields()
+    {
+        return filterFields;
+    }
+
+    public void updateFilterFields()
+    {
+        if(filterFields.startAmount == filterFields.minAmount)
+            filterFields.startAmount = Float.NEGATIVE_INFINITY;
+
+        if(filterFields.endAmount == filterFields.maxAmount)
+            filterFields.endAmount = Float.POSITIVE_INFINITY;
+
+        filterFields.reset();
+        for(Operation operation : operationsAll)
+        {
+            //amount
+            float amount = operation.getSignedAmount();
+            if(amount > filterFields.maxAmount)
+                filterFields.maxAmount = amount;
+            else if(amount < filterFields.minAmount)
+                filterFields.minAmount = amount;
+        }
+
+        filterFields.startAmount = Math.max(filterFields.minAmount, filterFields.startAmount);
+        filterFields.endAmount = Math.min(filterFields.maxAmount, filterFields.endAmount);
+
+        getFilter().filter(searchSeq);
+    }
+
+    public void applyFilterFields()
+    {
+        getFilter().filter(searchSeq);
+    }
+
     @Override
     public void remove(Operation object)
     {
@@ -62,6 +131,7 @@ public class OperationAdapter extends ArrayAdapter<Operation> implements Filtera
         if(operations != operationsAll)
             operations.remove(object);
         super.remove(object);
+        updateFilterFields();
     }
 
     @Override
@@ -70,6 +140,7 @@ public class OperationAdapter extends ArrayAdapter<Operation> implements Filtera
         updateSort = true;
         if(operations != operationsAll)
             operations.add(object);
+
         super.add(object);
     }
 
@@ -147,34 +218,46 @@ public class OperationAdapter extends ArrayAdapter<Operation> implements Filtera
 
     private class OperationFilter extends Filter
     {
-
         @Override
         protected FilterResults performFiltering(CharSequence constraint)
         {
             FilterResults results = new FilterResults();
-            if(constraint != null)
+            searchSeq = constraint;
+            ArrayList<Operation> filterList = new ArrayList<Operation>();
+            for (Operation operation : operationsAll)
             {
-                ArrayList<Operation> filterList = new ArrayList<Operation>();
-                for (Operation operation : operationsAll)
+                if(constraint != null)
                 {
                     String name = Tools.stripAccents(operation.getName().toLowerCase());
                     String constraintStr = Tools.stripAccents(constraint.toString().toLowerCase());
-                    if(constraintStr.length() > name.length())
+                    if (constraintStr.length() > name.length())
                         continue;
 
-                    if(!name.substring(0, constraintStr.length()).equals(constraintStr))
+                    if (!name.substring(0, constraintStr.length()).equals(constraintStr))
                         continue;
-
-                    filterList.add(operation);
                 }
-                results.values = filterList;
-                results.count = filterList.size();
+
+                float amount = operation.getSignedAmount();
+                if(amount < filterFields.startAmount || amount > filterFields.endAmount)
+                    continue;
+
+                String execDate = operation.getExecDate();
+                if(filterFields.startExecDate != EditTextDate.DATE_DEFAULT)
+                {
+                    if(Tools.compareDates(execDate, filterFields.startExecDate) < 0)
+                        continue;
+                }
+                if(filterFields.endExecDate != EditTextDate.DATE_DEFAULT)
+                {
+                    if(Tools.compareDates(execDate, filterFields.endExecDate) > 0)
+                        continue;
+                }
+
+                filterList.add(operation);
             }
-            else
-            {
-                results.values = operationsAll;
-                results.count = operationsAll.size();
-            }
+            results.values = filterList;
+            results.count = filterList.size();
+
             return results;
         }
 
