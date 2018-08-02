@@ -1,4 +1,4 @@
-package com.example.jean.gerersoncompte;
+package com.example.jean.gerersoncompte.Database;
 
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;

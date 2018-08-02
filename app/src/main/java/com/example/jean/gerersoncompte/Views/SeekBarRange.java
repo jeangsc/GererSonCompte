@@ -1,4 +1,4 @@
-package com.example.jean.gerersoncompte;
+package com.example.jean.gerersoncompte.Views;
 
 import android.content.Context;
 import android.content.res.TypedArray;
@@ -7,6 +7,8 @@ import android.graphics.drawable.Drawable;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.View;
+
+import com.example.jean.gerersoncompte.R;
 
 /**
  * TODO: document your custom view class.

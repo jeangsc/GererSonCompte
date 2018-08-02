@@ -1,8 +1,11 @@
-package com.example.jean.gerersoncompte;
+package com.example.jean.gerersoncompte.Database;
 
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
+
+import com.example.jean.gerersoncompte.GSCItems.Operation;
+import com.example.jean.gerersoncompte.Tools;
 
 import java.util.ArrayList;
 

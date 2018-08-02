@@ -1,4 +1,4 @@
-package com.example.jean.gerersoncompte;
+package com.example.jean.gerersoncompte.Views;
 
 import android.content.Context;
 import android.content.res.TypedArray;
@@ -6,6 +6,8 @@ import android.util.AttributeSet;
 import android.view.View;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+
+import com.example.jean.gerersoncompte.R;
 
 /**
  * Created by V17 on 02/07/2018.

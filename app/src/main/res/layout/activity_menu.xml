@@ -7,7 +7,7 @@
     android:background="@drawable/background_design1"
     android:focusable="true"
     android:focusableInTouchMode="true"
-    tools:context="com.example.jean.gerersoncompte.MenuActivity">
+    tools:context="com.example.jean.gerersoncompte.Activities.MenuActivity">
 
     <TextView
         android:id="@+id/men_value_nom"
@@ -93,7 +93,7 @@
         app:layout_constraintTop_toBottomOf="@+id/men_bouton_operations"
         app:layout_constraintVertical_bias="0.03" />
 
-    <!--com.example.jean.gerersoncompte.SeekBarRangeValues
+    com.example.jean.gerersoncompte.Views.SeekBarRangeValueslues
         android:layout_width="300dp"
         android:layout_height="60dp"
         android:layout_marginBottom="68dp"

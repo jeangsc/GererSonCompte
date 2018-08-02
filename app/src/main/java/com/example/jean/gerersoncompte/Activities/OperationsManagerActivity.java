@@ -1,4 +1,4 @@
-package com.example.jean.gerersoncompte;
+package com.example.jean.gerersoncompte.Activities;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
@@ -17,6 +17,16 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.SearchView;
+
+import com.example.jean.gerersoncompte.Adapters.OperationAdapter;
+import com.example.jean.gerersoncompte.Database.OperationDAO;
+import com.example.jean.gerersoncompte.GSCItems.Account;
+import com.example.jean.gerersoncompte.GSCItems.Operation;
+import com.example.jean.gerersoncompte.R;
+import com.example.jean.gerersoncompte.Tools;
+import com.example.jean.gerersoncompte.Views.EditTextDate;
+import com.example.jean.gerersoncompte.Views.GSCDialog;
+import com.example.jean.gerersoncompte.Views.SeekBarRangeValues;
 
 import java.util.ArrayList;
 
@@ -182,18 +192,18 @@ public class OperationsManagerActivity extends AppCompatActivity
     @Override
     public Dialog onCreateDialog(int id)
     {
-        GSCDialog.GSCBuilder builder = null;
+        AlertDialog dialog = null;
         switch(id)
         {
             case MENU_FILTER: {
                 View view = getLayoutInflater().inflate(R.layout.dialog_operation_filter, null);
                 initFilter(view);
-                builder = new GSCDialog.GSCBuilder(this, AlertDialog.THEME_TRADITIONAL);
-                builder.setTitle("Filtrer par");
-                builder.setCancelable(true);
-                builder.setView(view);
-                builder.setPositiveButton(R.string.appliquer, new OnApplyFieldsFilter());
-                builder.setNegativeButton(R.string.annuler, null);
+                dialog = new GSCDialog(this, AlertDialog.THEME_TRADITIONAL);
+                dialog.setTitle("Filtrer par");
+                dialog.setCancelable(true);
+                dialog.setView(view);
+                ((GSCDialog)dialog).setPositiveButton(R.string.appliquer, new OnApplyFieldsFilter());
+                ((GSCDialog)dialog).setNegativeButton(R.string.annuler, null);
                 break;
             }
 
@@ -202,28 +212,28 @@ public class OperationsManagerActivity extends AppCompatActivity
                 selectedSortField = adapter != null ? adapter.getSortField() : -1;
                 String[] items = getResources().getStringArray(R.array.sort_operation_list);
 
-                builder = new GSCDialog.GSCBuilder(this, AlertDialog.THEME_TRADITIONAL);
+                AlertDialog.Builder builder = new GSCDialog.Builder(this, AlertDialog.THEME_TRADITIONAL);
                 builder.setTitle("Trier par");
                 builder.setSingleChoiceItems(items, selectedSortField, new OnSortSelectListener());
                 builder.setCancelable(true);
                 builder.setPositiveButton(R.string.croissant, new OnSortAscListener());
                 builder.setNegativeButton(R.string.decroissant, new OnSortDescListener());
                 builder.setOnCancelListener(new OnSortCancelListener());
+                dialog = builder.create();
+
                 break;
             }
         }
 
-        if(builder != null)
-        {
-            GSCDialog dialog = builder.create();
-
+        if(dialog != null)
             dialog.show();
-        }
+
         return super.onCreateDialog(id);
     }
 
     private void initFilter(View view)
     {
+        //Spinner spinCategory = (Spinner) view.findViewById(R.id.dia_ope_fil_spin_categorie);
         SeekBarRangeValues seekBarAmounts = (SeekBarRangeValues) view.findViewById(R.id.dia_ope_fil_sbr_montant);
         EditTextDate startExecDate = (EditTextDate) view.findViewById(R.id.dia_ope_fil_edit_date_begin);
         EditTextDate endExecDate = (EditTextDate) view.findViewById(R.id.dia_ope_fil_edit_date_end);
@@ -232,6 +242,10 @@ public class OperationsManagerActivity extends AppCompatActivity
         if(adapter != null)
         {
             OperationAdapter.FilterFields fields = adapter.getFilterFields();
+           /* ArrayAdapter<CharSequence> spinAdapter = new ArrayAdapter<CharSequence>(this,
+                    android.R.layout.simple_spinner_item, fields.listCategories);
+            spinAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+            spinCategory.setAdapter(spinAdapter);*/
             seekBarAmounts.setMinVal(fields.minAmount);
             seekBarAmounts.setMaxVal(fields.maxAmount);
             seekBarAmounts.setPos(fields.startAmount, fields.endAmount);

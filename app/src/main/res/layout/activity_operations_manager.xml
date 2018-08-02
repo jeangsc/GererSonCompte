@@ -7,7 +7,7 @@
     android:background="@drawable/background_design1"
     android:focusable="true"
     android:focusableInTouchMode="true"
-    tools:context="com.example.jean.gerersoncompte.OperationsManagerActivity">
+    tools:context="com.example.jean.gerersoncompte.Activities.OperationsManagerActivity">
 
     <TextView
         android:id="@+id/ope_man_label_operations"

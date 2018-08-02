@@ -11,7 +11,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme.NoActionBar">
-        <activity android:name=".MenuActivity">
+        <activity android:name=".Activities.MenuActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -19,13 +19,13 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".AccountsManagerActivity"
+            android:name=".Activities.AccountsManagerActivity"
             android:windowSoftInputMode="adjustNothing" />
-        <activity android:name=".AccountCreationActivity" />
+        <activity android:name=".Activities.AccountCreationActivity" />
         <activity
-            android:name=".OperationsManagerActivity"
+            android:name=".Activities.OperationsManagerActivity"
             android:windowSoftInputMode="adjustNothing" />
-        <activity android:name=".OperationCreationActivity" />
+        <activity android:name=".Activities.OperationCreationActivity" />
 
     </application>
 

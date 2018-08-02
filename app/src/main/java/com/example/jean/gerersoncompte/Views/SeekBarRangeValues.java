@@ -1,4 +1,4 @@
-package com.example.jean.gerersoncompte;
+package com.example.jean.gerersoncompte.Views;
 
 import android.content.Context;
 import android.content.res.TypedArray;
@@ -11,7 +11,8 @@ import android.widget.EditText;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import java.math.BigDecimal;
+import com.example.jean.gerersoncompte.R;
+import com.example.jean.gerersoncompte.Tools;
 
 /**
  * Created by V17 on 12/07/2018.

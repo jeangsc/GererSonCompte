@@ -10,6 +10,9 @@ import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 
+import com.example.jean.gerersoncompte.Views.EditTextErrorChecker;
+import com.example.jean.gerersoncompte.Views.GSCDialog;
+
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
 import java.io.FileInputStream;

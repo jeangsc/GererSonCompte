@@ -1,4 +1,7 @@
-package com.example.jean.gerersoncompte;
+package com.example.jean.gerersoncompte.GSCItems;
+
+import com.example.jean.gerersoncompte.Database.OperationDAO;
+import com.example.jean.gerersoncompte.Database.OperationHistoryDAO;
 
 import java.io.Serializable;
 

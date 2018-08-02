@@ -1,4 +1,4 @@
-package com.example.jean.gerersoncompte;
+package com.example.jean.gerersoncompte.Activities;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -7,6 +7,15 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.widget.RadioGroup;
 import android.widget.RelativeLayout;
+
+import com.example.jean.gerersoncompte.GSCItems.Account;
+import com.example.jean.gerersoncompte.Database.OperationDAO;
+import com.example.jean.gerersoncompte.GeneralDatas;
+import com.example.jean.gerersoncompte.GSCItems.Operation;
+import com.example.jean.gerersoncompte.R;
+import com.example.jean.gerersoncompte.Tools;
+import com.example.jean.gerersoncompte.Views.EditTextDate;
+import com.example.jean.gerersoncompte.Views.EditTextErrorChecker;
 
 public class OperationCreationActivity extends AppCompatActivity
 {

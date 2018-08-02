@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/spi_mul_rlo"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content">
+
+    <TextView
+        android:id="@+id/spi_mul_text_choix"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/edittext_design1"
+        android:textColor="@color/colorBlack"
+        android:ems="11"
+        android:singleLine="true"
+        android:textSize="20sp" />
+
+    <ImageButton
+        android:id="@+id/spi_mul_but_dropdown"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/dropdown"
+        android:layout_toRightOf="@id/spi_mul_text_choix"
+        android:layout_alignBottom="@id/spi_mul_text_choix"
+        android:layout_alignTop="@id/spi_mul_text_choix" />
+
+</RelativeLayout>

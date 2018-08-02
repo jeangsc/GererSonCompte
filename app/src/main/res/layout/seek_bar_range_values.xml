@@ -30,7 +30,7 @@
         android:inputType="numberSigned|numberDecimal"
         android:textColor="@color/colorBlack"/>
 
-    <com.example.jean.gerersoncompte.SeekBarRange
+    <com.example.jean.gerersoncompte.Views.SeekBarRange
         android:id="@+id/seek_bar_rng_vals_sbr"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

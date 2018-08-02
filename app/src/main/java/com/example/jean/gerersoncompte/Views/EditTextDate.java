@@ -1,8 +1,7 @@
-package com.example.jean.gerersoncompte;
+package com.example.jean.gerersoncompte.Views;
 
 import android.app.DatePickerDialog;
 import android.content.Context;
-import android.content.res.TypedArray;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.AttributeSet;
@@ -12,6 +11,9 @@ import android.view.View;
 import android.widget.DatePicker;
 import android.widget.ImageButton;
 import android.widget.RelativeLayout;
+
+import com.example.jean.gerersoncompte.R;
+import com.example.jean.gerersoncompte.Tools;
 
 import java.util.Calendar;
 
@@ -185,6 +187,7 @@ public class EditTextDate extends RelativeLayout
                                          String.format("%04d", year);
                         dateTextWatcher.setForceChange(true);
                         editDate.setText(strDate);
+                        editDate.setError(false);
                         dateTextWatcher.setForceChange(false);
                     }
                 };

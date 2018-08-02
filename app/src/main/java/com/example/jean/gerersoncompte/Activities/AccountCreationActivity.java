@@ -1,4 +1,4 @@
-package com.example.jean.gerersoncompte;
+package com.example.jean.gerersoncompte.Activities;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -7,6 +7,12 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.widget.CheckBox;
 import android.widget.EditText;
+
+import com.example.jean.gerersoncompte.GSCItems.Account;
+import com.example.jean.gerersoncompte.Database.AccountDAO;
+import com.example.jean.gerersoncompte.GeneralDatas;
+import com.example.jean.gerersoncompte.R;
+import com.example.jean.gerersoncompte.Tools;
 
 public class AccountCreationActivity extends AppCompatActivity {
 

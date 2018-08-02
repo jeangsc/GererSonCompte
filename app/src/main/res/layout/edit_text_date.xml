@@ -5,7 +5,7 @@
     android:layout_width="wrap_content"
     android:layout_height="wrap_content">
 
-    <com.example.jean.gerersoncompte.EditTextErrorChecker
+    <com.example.jean.gerersoncompte.Views.EditTextErrorChecker
         android:id="@+id/edit_text_date_edit"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

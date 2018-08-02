@@ -1,4 +1,4 @@
-package com.example.jean.gerersoncompte;
+package com.example.jean.gerersoncompte.Adapters;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -7,6 +7,11 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.example.jean.gerersoncompte.GSCItems.Account;
+import com.example.jean.gerersoncompte.GeneralDatas;
+import com.example.jean.gerersoncompte.R;
+import com.example.jean.gerersoncompte.Tools;
 
 import java.util.List;
 

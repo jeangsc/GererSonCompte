@@ -1,4 +1,4 @@
-package com.example.jean.gerersoncompte;
+package com.example.jean.gerersoncompte.Adapters;
 
 import android.content.Context;
 import android.util.Log;
@@ -10,10 +10,16 @@ import android.widget.Filter;
 import android.widget.Filterable;
 import android.widget.TextView;
 
+import com.example.jean.gerersoncompte.GSCItems.Operation;
+import com.example.jean.gerersoncompte.R;
+import com.example.jean.gerersoncompte.Tools;
+import com.example.jean.gerersoncompte.Views.EditTextDate;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
+import java.util.TreeSet;
 
 /**
  * Created by V17 on 02/05/2018.
@@ -28,6 +34,8 @@ public class OperationAdapter extends ArrayAdapter<Operation> implements Filtera
 
     public final static byte SORT_ASC = 1;
     public final static byte SORT_DESC = -1;
+
+    public final static String SPIN_DEFAULT = "Tout sélectionner";
 
     private List<Operation> operations;
     private List<Operation> operationsAll;
@@ -62,18 +70,22 @@ public class OperationAdapter extends ArrayAdapter<Operation> implements Filtera
 
     public class FilterFields
     {
+        //filter category
+        public ArrayList<CharSequence> listCategories;
+
         //filter amount
-        float minAmount;
-        float maxAmount;
-        float startAmount;
-        float endAmount;
+        public float minAmount;
+        public float maxAmount;
+        public float startAmount;
+        public float endAmount;
 
         //filter dates
-        String startExecDate;
-        String endExecDate;
+        public String startExecDate;
+        public String endExecDate;
 
         FilterFields()
         {
+            listCategories = new ArrayList<CharSequence>();
             reset();
             startAmount = minAmount;
             endAmount = maxAmount;
@@ -84,6 +96,7 @@ public class OperationAdapter extends ArrayAdapter<Operation> implements Filtera
 
         void reset()
         {
+            listCategories.clear();
             minAmount = -10.0f;
             maxAmount = 10.0f;
         }
@@ -103,8 +116,13 @@ public class OperationAdapter extends ArrayAdapter<Operation> implements Filtera
             filterFields.endAmount = Float.POSITIVE_INFINITY;
 
         filterFields.reset();
+
+        TreeSet<CharSequence> setCategories = new TreeSet<CharSequence>();
         for(Operation operation : operationsAll)
         {
+            //category
+            setCategories.add(operation.getCategory());
+
             //amount
             float amount = operation.getSignedAmount();
             if(amount > filterFields.maxAmount)
@@ -113,6 +131,9 @@ public class OperationAdapter extends ArrayAdapter<Operation> implements Filtera
                 filterFields.minAmount = amount;
         }
 
+        filterFields.listCategories.add(SPIN_DEFAULT);
+        for(CharSequence category : setCategories)
+            filterFields.listCategories.add(category);
         filterFields.startAmount = Math.max(filterFields.minAmount, filterFields.startAmount);
         filterFields.endAmount = Math.min(filterFields.maxAmount, filterFields.endAmount);
 

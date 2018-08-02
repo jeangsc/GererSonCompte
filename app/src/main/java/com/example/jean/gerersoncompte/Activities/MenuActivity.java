@@ -1,4 +1,4 @@
-package com.example.jean.gerersoncompte;
+package com.example.jean.gerersoncompte.Activities;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -8,6 +8,14 @@ import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.TextView;
+
+import com.example.jean.gerersoncompte.GSCItems.Account;
+import com.example.jean.gerersoncompte.Database.AccountDAO;
+import com.example.jean.gerersoncompte.Database.OperationDAO;
+import com.example.jean.gerersoncompte.Database.OperationHistoryDAO;
+import com.example.jean.gerersoncompte.GeneralDatas;
+import com.example.jean.gerersoncompte.R;
+import com.example.jean.gerersoncompte.Tools;
 
 import java.io.File;
 import java.io.FileInputStream;

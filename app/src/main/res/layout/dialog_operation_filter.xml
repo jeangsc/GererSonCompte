@@ -7,24 +7,55 @@
     android:focusableInTouchMode="true">
 
     <TextView
+        android:id="@+id/dia_ope_fil_categorie"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="5dp"
+        android:text="Catégories:"
+        android:textColor="@color/colorBlack"
+        android:textSize="20sp" />
+
+    <!--Spinner
+        android:id="@+id/dia_ope_fil_spin_categorie"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="15dp"
+        android:layout_below="@id/dia_ope_fil_categorie">
+    </Spinner-->
+    <com.example.jean.gerersoncompte.Views.SpinnerMultiple
+        android:id="@+id/dia_ope_fil_spin_categorie"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="15dp"
+        android:layout_below="@id/dia_ope_fil_categorie">
+
+    </com.example.jean.gerersoncompte.Views.SpinnerMultiple>
+
+    <TextView
         android:id="@+id/dia_ope_fil_montant"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_below="@id/dia_ope_fil_spin_categorie"
+        android:layout_marginLeft="5dp"
+        android:layout_marginTop="30dp"
         android:text="Montants compris entre:"
         android:textColor="@color/colorBlack"
         android:textSize="20sp" />
 
-    <com.example.jean.gerersoncompte.SeekBarRangeValues
+    <com.example.jean.gerersoncompte.Views.SeekBarRangeValues
         android:id="@+id/dia_ope_fil_sbr_montant"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_below="@id/dia_ope_fil_montant"
         android:layout_marginTop="10dp"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+        android:layout_marginLeft="5dp"
+        android:layout_marginRight="5dp" />
 
     <TextView
         android:id="@+id/dia_ope_fil_execdate"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginLeft="5dp"
         android:layout_below="@id/dia_ope_fil_sbr_montant"
         android:layout_marginTop="30dp"
         android:text="Dates d'exécution comprises entre:"
@@ -35,14 +66,16 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@id/dia_ope_fil_execdate"
-        android:layout_marginTop="10dp">
+        android:layout_marginTop="10dp"
+        android:layout_marginLeft="5dp"
+        android:layout_marginRight="5dp">
 
-        <com.example.jean.gerersoncompte.EditTextDate
+        <com.example.jean.gerersoncompte.Views.EditTextDate
             android:id="@+id/dia_ope_fil_edit_date_begin"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
 
-        <com.example.jean.gerersoncompte.EditTextDate
+        <com.example.jean.gerersoncompte.Views.EditTextDate
             android:id="@+id/dia_ope_fil_edit_date_end"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

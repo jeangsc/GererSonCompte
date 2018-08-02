@@ -8,7 +8,7 @@ import java.io.Serializable;
  * Created by V17 on 26/04/2018.
  */
 
-class GeneralDatas implements Serializable
+public class GeneralDatas implements Serializable
 {
 
     private static final GeneralDatas ourInstance = new GeneralDatas();
@@ -19,7 +19,7 @@ class GeneralDatas implements Serializable
     public long accCurId; //current account
     public String lastDate; //last updated date
 
-    static GeneralDatas getInstance()
+    public static GeneralDatas getInstance()
     {
         return ourInstance;
     }

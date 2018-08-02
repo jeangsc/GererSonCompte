@@ -7,7 +7,7 @@
     android:focusable="true"
     android:focusableInTouchMode="true"
     android:background="@drawable/background_design1"
-    tools:context="com.example.jean.gerersoncompte.OperationCreationActivity">
+    tools:context="com.example.jean.gerersoncompte.Activities.OperationCreationActivity">
 
     <RelativeLayout
         android:id="@+id/ope_cre_rlo"
@@ -32,7 +32,7 @@
             android:textSize="12sp"
             android:textStyle="bold" />
 
-        <com.example.jean.gerersoncompte.EditTextErrorChecker
+        <com.example.jean.gerersoncompte.Views.EditTextErrorChecker
             android:id="@+id/ope_cre_edit_nom"
             android:layout_width="200dp"
             android:layout_height="wrap_content"
@@ -61,7 +61,7 @@
             android:textSize="12sp"
             android:textStyle="bold" />
 
-        <com.example.jean.gerersoncompte.EditTextErrorChecker
+        <com.example.jean.gerersoncompte.Views.EditTextErrorChecker
             android:id="@+id/ope_cre_edit_categorie"
             android:layout_width="200dp"
             android:layout_height="wrap_content"
@@ -90,7 +90,7 @@
             android:textSize="12sp"
             android:textStyle="bold" />
 
-        <com.example.jean.gerersoncompte.EditTextErrorChecker
+        <com.example.jean.gerersoncompte.Views.EditTextErrorChecker
             android:id="@+id/ope_cre_edit_montant"
             android:layout_width="200dp"
             android:layout_height="wrap_content"
@@ -142,7 +142,7 @@
             android:textSize="12sp"
             android:textStyle="bold" />
 
-        <com.example.jean.gerersoncompte.EditTextDate
+        <com.example.jean.gerersoncompte.Views.EditTextDate
             android:id="@+id/ope_cre_edit_execdate"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
