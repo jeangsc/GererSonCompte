@@ -22,20 +22,34 @@
         android:layout_marginLeft="15dp"
         android:layout_below="@id/dia_ope_fil_categorie">
     </Spinner-->
-    <com.example.jean.gerersoncompte.Views.SpinnerMultiple
+    <!--com.example.jean.gerersoncompte.Views.SpinnerMultiple
         android:id="@+id/dia_ope_fil_spin_categorie"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginLeft="15dp"
         android:layout_below="@id/dia_ope_fil_categorie">
 
-    </com.example.jean.gerersoncompte.Views.SpinnerMultiple>
+    </com.example.jean.gerersoncompte.Views.SpinnerMultiple-->
+
+    <include layout="@layout/item_checkbox_list"
+        android:id="@+id/dia_ope_fil_item_all_categorie"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="15dp"
+        android:layout_below="@id/dia_ope_fil_categorie" />
+
+    <ListView
+        android:id="@+id/dia_ope_fil_list_categorie"
+        android:layout_width="wrap_content"
+        android:layout_height="150dp"
+        android:layout_marginLeft="20dp"
+        android:layout_below="@+id/dia_ope_fil_item_all_categorie" />
 
     <TextView
         android:id="@+id/dia_ope_fil_montant"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/dia_ope_fil_spin_categorie"
+        android:layout_below="@id/dia_ope_fil_list_categorie"
         android:layout_marginLeft="5dp"
         android:layout_marginTop="30dp"
         android:text="Montants compris entre:"

@@ -34,5 +34,6 @@
     <string name="montants">Montants</string>
     <string name="dates_d_execution">Dates d\'exécution</string>
     <string name="appliquer">Appliquer</string>
+    <string name="tout_selectionner">Tout sélectionner</string>
 
 </resources>

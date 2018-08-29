@@ -15,9 +15,12 @@ import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.ListView;
 import android.widget.SearchView;
 
+import com.example.jean.gerersoncompte.Adapters.CheckboxListAdapter;
 import com.example.jean.gerersoncompte.Adapters.OperationAdapter;
 import com.example.jean.gerersoncompte.Database.OperationDAO;
 import com.example.jean.gerersoncompte.GSCItems.Account;
@@ -234,10 +237,13 @@ public class OperationsManagerActivity extends AppCompatActivity
     private void initFilter(View view)
     {
         //Spinner spinCategory = (Spinner) view.findViewById(R.id.dia_ope_fil_spin_categorie);
+        View viewAllCategory = view.findViewById(R.id.dia_ope_fil_item_all_categorie);
+        CheckBox checkAllCategory = (CheckBox) viewAllCategory.findViewById(R.id.item_spin_mul_check);
+        ListView listCategories = (ListView) view.findViewById(R.id.dia_ope_fil_list_categorie);
+
         SeekBarRangeValues seekBarAmounts = (SeekBarRangeValues) view.findViewById(R.id.dia_ope_fil_sbr_montant);
         EditTextDate startExecDate = (EditTextDate) view.findViewById(R.id.dia_ope_fil_edit_date_begin);
         EditTextDate endExecDate = (EditTextDate) view.findViewById(R.id.dia_ope_fil_edit_date_end);
-
         OperationAdapter adapter = (OperationAdapter) operationsList.getAdapter();
         if(adapter != null)
         {
@@ -246,10 +252,32 @@ public class OperationsManagerActivity extends AppCompatActivity
                     android.R.layout.simple_spinner_item, fields.listCategories);
             spinAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
             spinCategory.setAdapter(spinAdapter);*/
+            //CATEGORIES
+            checkAllCategory.setChecked(fields.checkAll);
+            final CheckboxListAdapter cblAdapter = new CheckboxListAdapter(this, new ArrayList<CheckboxListAdapter.CheckboxItem>());
+            for(CharSequence cs : fields.listCategories)
+            {
+                Boolean itemChecked = fields.checkedCategories.get(cs);
+                boolean isChecked = itemChecked == null ? true : itemChecked.booleanValue();
+                CheckboxListAdapter.CheckboxItem item = cblAdapter.generateItem(cs.toString(), isChecked);
+                cblAdapter.add(item);
+            }
+            listCategories.setAdapter(cblAdapter);
+            checkAllCategory.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener()
+            {
+                @Override
+                public void onCheckedChanged(CompoundButton buttonView, boolean isChecked)
+                {
+                    cblAdapter.setCheckedAll(isChecked);
+                    cblAdapter.notifyDataSetChanged();
+                }
+            });
+            //AMOUNTS
             seekBarAmounts.setMinVal(fields.minAmount);
             seekBarAmounts.setMaxVal(fields.maxAmount);
             seekBarAmounts.setPos(fields.startAmount, fields.endAmount);
 
+            //DATES
             startExecDate.setDate(fields.startExecDate);
             endExecDate.setDate(fields.endExecDate);
         }
@@ -262,6 +290,9 @@ public class OperationsManagerActivity extends AppCompatActivity
         {
             AlertDialog alertDialog = (AlertDialog)dialog;
 
+            View viewAllCategory = alertDialog.findViewById(R.id.dia_ope_fil_item_all_categorie);
+            CheckBox checkAllCategory = (CheckBox) viewAllCategory.findViewById(R.id.item_spin_mul_check);
+            ListView listCategories = (ListView) alertDialog.findViewById(R.id.dia_ope_fil_list_categorie);
             SeekBarRangeValues seekBarAmounts = (SeekBarRangeValues) alertDialog.findViewById(R.id.dia_ope_fil_sbr_montant);
             EditTextDate startExecDate = (EditTextDate) alertDialog.findViewById(R.id.dia_ope_fil_edit_date_begin);
             EditTextDate endExecDate = (EditTextDate) alertDialog.findViewById(R.id.dia_ope_fil_edit_date_end);
@@ -270,6 +301,8 @@ public class OperationsManagerActivity extends AppCompatActivity
             if(adapter != null)
             {
                 OperationAdapter.FilterFields fields = adapter.getFilterFields();
+
+                fields.checkAll = checkAllCategory.isChecked();
                 fields.startAmount = Tools.floatTruncated(seekBarAmounts.getPosLeft(), 2);
                 fields.endAmount = Tools.floatTruncated(seekBarAmounts.getPosRight(), 2);
 

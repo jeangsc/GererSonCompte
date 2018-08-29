@@ -80,6 +80,19 @@ public class SpinnerMultiple extends RelativeLayout
                 SpinnerMultipleAdapter adapter = new SpinnerMultipleAdapter(getContext(), itemsList);
                 list.setAdapter(adapter);
                 popup.showAsDropDown(baseLayout);
+                adapter.setOnCheckListener(new SpinnerMultipleAdapter.OnCheckListener() {
+                    @Override
+                    public void onCheck(int index)
+                    {
+                        checkItem(index);
+                    }
+
+                    @Override
+                    public void onUncheck(int index)
+                    {
+                        uncheckItem(index);
+                    }
+                });
 
 
             }

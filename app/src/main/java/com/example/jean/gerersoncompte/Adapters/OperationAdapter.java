@@ -18,6 +18,7 @@ import com.example.jean.gerersoncompte.Views.EditTextDate;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.HashMap;
 import java.util.List;
 import java.util.TreeSet;
 
@@ -34,8 +35,6 @@ public class OperationAdapter extends ArrayAdapter<Operation> implements Filtera
 
     public final static byte SORT_ASC = 1;
     public final static byte SORT_DESC = -1;
-
-    public final static String SPIN_DEFAULT = "Tout sélectionner";
 
     private List<Operation> operations;
     private List<Operation> operationsAll;
@@ -72,6 +71,8 @@ public class OperationAdapter extends ArrayAdapter<Operation> implements Filtera
     {
         //filter category
         public ArrayList<CharSequence> listCategories;
+        public HashMap<CharSequence, Boolean> checkedCategories;
+        public boolean checkAll;
 
         //filter amount
         public float minAmount;
@@ -85,7 +86,9 @@ public class OperationAdapter extends ArrayAdapter<Operation> implements Filtera
 
         FilterFields()
         {
+            checkAll = true;
             listCategories = new ArrayList<CharSequence>();
+            checkedCategories = new HashMap<CharSequence, Boolean>();
             reset();
             startAmount = minAmount;
             endAmount = maxAmount;
@@ -131,7 +134,6 @@ public class OperationAdapter extends ArrayAdapter<Operation> implements Filtera
                 filterFields.minAmount = amount;
         }
 
-        filterFields.listCategories.add(SPIN_DEFAULT);
         for(CharSequence category : setCategories)
             filterFields.listCategories.add(category);
         filterFields.startAmount = Math.max(filterFields.minAmount, filterFields.startAmount);
