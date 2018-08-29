@@ -25,9 +25,9 @@ public class CheckboxListAdapter extends ArrayAdapter<CheckboxListAdapter.Checkb
 
     public class CheckboxItem
     {
-        CheckBox itemCheck;
+        private CheckBox itemCheck;
 
-        String name;
+        public String name;
         private boolean isChecked;
 
         CheckboxItem(String name, boolean isChecked)
@@ -37,12 +37,12 @@ public class CheckboxListAdapter extends ArrayAdapter<CheckboxListAdapter.Checkb
             this.isChecked = isChecked;
         }
 
-        boolean isChecked()
+        public boolean isChecked()
         {
             return isChecked;
         }
 
-        void setChecked(boolean isChecked)
+        public void setChecked(boolean isChecked)
         {
             this.isChecked = isChecked;
             if(itemCheck != null)

@@ -15,22 +15,6 @@
         android:textColor="@color/colorBlack"
         android:textSize="20sp" />
 
-    <!--Spinner
-        android:id="@+id/dia_ope_fil_spin_categorie"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="15dp"
-        android:layout_below="@id/dia_ope_fil_categorie">
-    </Spinner-->
-    <!--com.example.jean.gerersoncompte.Views.SpinnerMultiple
-        android:id="@+id/dia_ope_fil_spin_categorie"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="15dp"
-        android:layout_below="@id/dia_ope_fil_categorie">
-
-    </com.example.jean.gerersoncompte.Views.SpinnerMultiple-->
-
     <include layout="@layout/item_checkbox_list"
         android:id="@+id/dia_ope_fil_item_all_categorie"
         android:layout_width="wrap_content"
