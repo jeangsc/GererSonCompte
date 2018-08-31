@@ -3,11 +3,13 @@ package com.example.jean.gerersoncompte.Activities;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.RadioGroup;
 import android.widget.RelativeLayout;
 
+import com.example.jean.gerersoncompte.Constants;
 import com.example.jean.gerersoncompte.GSCItems.Account;
 import com.example.jean.gerersoncompte.Database.OperationDAO;
 import com.example.jean.gerersoncompte.GeneralDatas;
@@ -26,9 +28,8 @@ public class OperationCreationActivity extends AppCompatActivity
     private EditTextErrorChecker editECExecDate = null;
     private EditTextDate editExecDate = null;
 
-    private final static String extraAccount = "EXTRA_ACCOUNT";
-
     private Account account = null;
+    private Operation operation = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -38,7 +39,9 @@ public class OperationCreationActivity extends AppCompatActivity
         RelativeLayout currentLayout = (RelativeLayout) findViewById(R.id.ope_cre_rlo);
 
         Intent intent = getIntent();
-        account = (Account)intent.getSerializableExtra(extraAccount);
+
+        account = (Account)intent.getSerializableExtra(Constants.extraAccount);
+        operation = (Operation)intent.getSerializableExtra(Constants.extraOperation);
 
         editName = (EditTextErrorChecker) findViewById(R.id.ope_cre_edit_nom);
         editCategory = (EditTextErrorChecker) findViewById(R.id.ope_cre_edit_categorie);
@@ -51,7 +54,21 @@ public class OperationCreationActivity extends AppCompatActivity
         currentLayout.addView(editCategory.getTextError());
         currentLayout.addView(editAmount.getTextError());
 
+        initOperation();
+
         setResult(RESULT_CANCELED);
+    }
+
+    private void initOperation()
+    {
+        if(operation != null)
+        {
+            editName.setText(operation.getName());
+            editCategory.setText(operation.getCategory());
+            editAmount.setText(Tools.floatFormat(operation.getAmount(), 2));
+            radGrpSide.check(operation.isGain() ? R.id.ope_cre_rad_btn_credit : R.id.ope_cre_rad_btn_debit);
+            editExecDate.setDate(operation.getExecDate());
+        }
     }
 
     public void processCreateOperation(View view)
@@ -67,14 +84,23 @@ public class OperationCreationActivity extends AppCompatActivity
             boolean opeIsGain = radGrpSide.getCheckedRadioButtonId() == R.id.ope_cre_rad_btn_credit;
             String  opeExecDate = editExecDate.getDate();
 
-            Operation operation = new Operation(opeName, account.getId());
+            boolean isNew = false;
+            if(operation == null)
+            {
+                isNew = true;
+                operation = new Operation(opeName, account.getId());
+            }
             operation.setCategory(opeCategory);
             operation.setAmount(opeAmount);
             operation.setGain(opeIsGain);
             operation.setExecDate(opeExecDate);
 
             OperationDAO opeDAO = OperationDAO.getInstance();
-            boolean succeed = opeDAO.insert(operation);
+            boolean succeed = false;
+            if(isNew)
+                succeed = opeDAO.insert(operation);
+            else
+                succeed = opeDAO.update(operation);
 
             if(succeed)
             {
@@ -85,7 +111,7 @@ public class OperationCreationActivity extends AppCompatActivity
                 account.update();
 
                 Intent result = new Intent();
-                result.putExtra(extraAccount, account);
+                result.putExtra(Constants.extraAccount, account);
                 setResult(RESULT_OK, result);
 
                 finish();

@@ -20,8 +20,10 @@ import android.widget.CompoundButton;
 import android.widget.ListView;
 import android.widget.SearchView;
 
+import com.example.jean.gerersoncompte.AdapterItem.CheckboxItem;
 import com.example.jean.gerersoncompte.Adapters.CheckboxListAdapter;
 import com.example.jean.gerersoncompte.Adapters.OperationAdapter;
+import com.example.jean.gerersoncompte.Constants;
 import com.example.jean.gerersoncompte.Database.OperationDAO;
 import com.example.jean.gerersoncompte.GSCItems.Account;
 import com.example.jean.gerersoncompte.GSCItems.Operation;
@@ -37,8 +39,6 @@ public class OperationsManagerActivity extends AppCompatActivity
 {
     private final static int MENU_FILTER = 1;
     private final static int MENU_SORT = 2;
-    private final static String extraAccount = "EXTRA_ACCOUNT";
-    private final static int requestNewOperation = 1;
 
     private ListView operationsList = null;
     private SearchView operationSearcher = null;
@@ -55,7 +55,7 @@ public class OperationsManagerActivity extends AppCompatActivity
         setContentView(R.layout.activity_operations_manager);
 
         Intent intent = getIntent();
-        account = (Account)intent.getSerializableExtra(extraAccount);
+        account = (Account)intent.getSerializableExtra(Constants.extraAccount);
 
         operationSearcher = (SearchView) findViewById(R.id.ope_man_sea_nom);
         operationSearcher.setOnQueryTextListener(new SearchView.OnQueryTextListener()
@@ -99,9 +99,15 @@ public class OperationsManagerActivity extends AppCompatActivity
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data)
     {
-        if(requestCode == requestNewOperation && resultCode == RESULT_OK)
+        if(requestCode == Constants.requestNewOperation && resultCode == RESULT_OK)
         {
-            account = (Account)data.getSerializableExtra(extraAccount);
+            account = (Account)data.getSerializableExtra(Constants.extraAccount);
+        }
+        else if(requestCode == Constants.requestModifyOperation && resultCode == RESULT_OK)
+        {
+            account = (Account)data.getSerializableExtra(Constants.extraAccount);
+            //Operation operation = (Operation)data.getSerializableExtra(Constants.extraOperation);
+
         }
     }
 
@@ -150,7 +156,22 @@ public class OperationsManagerActivity extends AppCompatActivity
 
     public void processModifyOperation()
     {
+        if(selectedOperation != -1)
+        {
+            OperationAdapter adapter = (OperationAdapter) operationsList.getAdapter();
+            Operation operation = adapter.getItem(selectedOperation);
+            if(operation != null)
+            {
+                Intent operationCreationIntent = new Intent(OperationsManagerActivity.this, OperationCreationActivity.class);
+                operationCreationIntent.putExtra(Constants.extraAccount, account);
+                operationCreationIntent.putExtra(Constants.extraOperation, operation);
+                startActivityForResult(operationCreationIntent, Constants.requestModifyOperation);
 
+                selectedOperation = -1;
+                selectedView = null;
+            }
+            Log.d("MODIFY", "modifying operation");
+        }
     }
 
     public void processDeleteOperation()
@@ -176,8 +197,8 @@ public class OperationsManagerActivity extends AppCompatActivity
     public void processCreateOperation(View view)
     {
         Intent operationCreationIntent = new Intent(OperationsManagerActivity.this, OperationCreationActivity.class);
-        operationCreationIntent.putExtra(extraAccount, account);
-        startActivityForResult(operationCreationIntent, requestNewOperation);
+        operationCreationIntent.putExtra(Constants.extraAccount, account);
+        startActivityForResult(operationCreationIntent, Constants.requestNewOperation);
     }
 
     @Override
@@ -248,20 +269,11 @@ public class OperationsManagerActivity extends AppCompatActivity
         if(adapter != null)
         {
             OperationAdapter.FilterFields fields = adapter.getFilterFields();
-           /* ArrayAdapter<CharSequence> spinAdapter = new ArrayAdapter<CharSequence>(this,
-                    android.R.layout.simple_spinner_item, fields.listCategories);
-            spinAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-            spinCategory.setAdapter(spinAdapter);*/
+
             //CATEGORIES
+            Log.i("initFilter", "checkAll saved = " + String.valueOf(fields.checkAll));
             checkAllCategory.setChecked(fields.checkAll);
-            final CheckboxListAdapter cblAdapter = new CheckboxListAdapter(this, new ArrayList<CheckboxListAdapter.CheckboxItem>());
-            for(CharSequence cs : fields.listCategories)
-            {
-                Boolean itemChecked = fields.checkedCategories.get(cs);
-                boolean isChecked = itemChecked == null ? true : itemChecked.booleanValue();
-                CheckboxListAdapter.CheckboxItem item = cblAdapter.generateItem(cs.toString(), isChecked);
-                cblAdapter.add(item);
-            }
+            final CheckboxListAdapter cblAdapter = new CheckboxListAdapter(this, adapter.generateCBIList());
             listCategories.setAdapter(cblAdapter);
             checkAllCategory.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener()
             {
@@ -302,12 +314,14 @@ public class OperationsManagerActivity extends AppCompatActivity
             if(adapter != null)
             {
                 OperationAdapter.FilterFields fields = adapter.getFilterFields();
+                fields.checkAll = checkAllCategory.isChecked();
                 for(int position = 0; position < cblAdapter.getCount(); position++)
                 {
-                    CheckboxListAdapter.CheckboxItem item = cblAdapter.getItem(position);
-                    fields.checkedCategories.put(item.name, item.isChecked());
+                    CheckboxItem cbi = cblAdapter.getItem(position);
+                    fields.listCategoriesItems.put(cbi.name, cbi);
+                    cbi.dump();
                 }
-                fields.checkAll = checkAllCategory.isChecked();
+
                 fields.startAmount = Tools.floatTruncated(seekBarAmounts.getPosLeft(), 2);
                 fields.endAmount = Tools.floatTruncated(seekBarAmounts.getPosRight(), 2);
 

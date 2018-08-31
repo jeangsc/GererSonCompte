@@ -62,10 +62,10 @@ public class OperationDAO extends BaseDAO
         return false;
     }
 
-    public void update(Operation operation)
+    public boolean update(Operation operation)
     {
         if(operation == null)
-            return;
+            return false;
 
         open();
         if(mDb != null) {
@@ -79,7 +79,9 @@ public class OperationDAO extends BaseDAO
             String[] whereArgs = new String[]{String.valueOf(operation.getId())};
             mDb.update(TABLE_NAME, values, whereClause, whereArgs);
             close();
+            return true;
         }
+        return false;
     }
 
     public void delete(long id)

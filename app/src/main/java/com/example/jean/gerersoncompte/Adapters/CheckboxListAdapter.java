@@ -1,13 +1,16 @@
 package com.example.jean.gerersoncompte.Adapters;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.TextView;
 
+import com.example.jean.gerersoncompte.AdapterItem.CheckboxItem;
 import com.example.jean.gerersoncompte.R;
 
 import java.util.List;
@@ -16,49 +19,23 @@ import java.util.List;
  * Created by V17 on 29/08/2018.
  */
 
-public class CheckboxListAdapter extends ArrayAdapter<CheckboxListAdapter.CheckboxItem>
+public class CheckboxListAdapter extends ArrayAdapter<CheckboxItem>
 {
     public CheckboxListAdapter(Context context, List<CheckboxItem> list)
     {
         super(context,0, list);
     }
 
-    public class CheckboxItem
-    {
-        private CheckBox itemCheck;
-
-        public String name;
-        private boolean isChecked;
-
-        CheckboxItem(String name, boolean isChecked)
-        {
-            itemCheck = null;
-            this.name = name;
-            this.isChecked = isChecked;
-        }
-
-        public boolean isChecked()
-        {
-            return isChecked;
-        }
-
-        public void setChecked(boolean isChecked)
-        {
-            this.isChecked = isChecked;
-            if(itemCheck != null)
-                itemCheck.setChecked(isChecked);
-        }
-    }
-
     private static class ViewHolder
     {
         TextView itemText;
-        CheckBox itemCheck;
+        CheckBox itemCB;
     }
 
     @Override
     public View getView(final int position, View convertView, ViewGroup parent)
     {
+        Log.i("getView", "getView");
         CheckboxItem item = getItem(position);
         ViewHolder viewHolder;
         if (convertView == null)
@@ -66,7 +43,7 @@ public class CheckboxListAdapter extends ArrayAdapter<CheckboxListAdapter.Checkb
             viewHolder = new ViewHolder();
             convertView = LayoutInflater.from(getContext()).inflate(R.layout.item_checkbox_list, parent, false);
             viewHolder.itemText  = (TextView) convertView.findViewById(R.id.item_spin_mul_text);
-            viewHolder.itemCheck = (CheckBox) convertView.findViewById(R.id.item_spin_mul_check);
+            viewHolder.itemCB = (CheckBox) convertView.findViewById(R.id.item_spin_mul_check);
             convertView.setTag(viewHolder);
         }
         else
@@ -76,9 +53,9 @@ public class CheckboxListAdapter extends ArrayAdapter<CheckboxListAdapter.Checkb
 
         if(item != null)
         {
+            item.dump();
             viewHolder.itemText.setText(item.name);
-            item.itemCheck = viewHolder.itemCheck;
-            item.setChecked(item.isChecked());
+            item.setItemCheck(viewHolder.itemCB);
         }
 
         return convertView;
@@ -86,15 +63,11 @@ public class CheckboxListAdapter extends ArrayAdapter<CheckboxListAdapter.Checkb
 
     public void setCheckedAll(boolean isChecked)
     {
+        Log.i("SetCheckAll", "isChecked = " + String.valueOf(isChecked));
         for(int position = 0; position < super.getCount(); position++)
         {
             CheckboxItem item = getItem(position);
             item.setChecked(isChecked);
         }
-    }
-
-    public CheckboxItem generateItem(String name, boolean isChecked)
-    {
-        return new CheckboxItem(name, isChecked);
     }
 }

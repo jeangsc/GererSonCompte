@@ -6,10 +6,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.CheckBox;
 import android.widget.Filter;
 import android.widget.Filterable;
 import android.widget.TextView;
 
+import com.example.jean.gerersoncompte.AdapterItem.CheckboxItem;
 import com.example.jean.gerersoncompte.GSCItems.Operation;
 import com.example.jean.gerersoncompte.R;
 import com.example.jean.gerersoncompte.Tools;
@@ -70,9 +72,8 @@ public class OperationAdapter extends ArrayAdapter<Operation> implements Filtera
     public class FilterFields
     {
         //filter category
-        public ArrayList<CharSequence> listCategories;
-        public HashMap<CharSequence, Boolean> checkedCategories;
         public boolean checkAll;
+        public HashMap<CharSequence, CheckboxItem> listCategoriesItems;
 
         //filter amount
         public float minAmount;
@@ -87,8 +88,9 @@ public class OperationAdapter extends ArrayAdapter<Operation> implements Filtera
         FilterFields()
         {
             checkAll = true;
-            listCategories = new ArrayList<CharSequence>();
-            checkedCategories = new HashMap<CharSequence, Boolean>();
+            //listCategories = new ArrayList<CharSequence>();
+            listCategoriesItems = new HashMap<CharSequence, CheckboxItem>();
+            //listCategoriesItems = new ArrayList<CheckboxListAdapter.CheckboxItem>();
             reset();
             startAmount = minAmount;
             endAmount = maxAmount;
@@ -99,7 +101,7 @@ public class OperationAdapter extends ArrayAdapter<Operation> implements Filtera
 
         void reset()
         {
-            listCategories.clear();
+            //listCategories.clear();
             minAmount = -10.0f;
             maxAmount = 10.0f;
         }
@@ -134,8 +136,17 @@ public class OperationAdapter extends ArrayAdapter<Operation> implements Filtera
                 filterFields.minAmount = amount;
         }
 
+        HashMap<CharSequence, CheckboxItem> listCategoriesItemsTemp = new HashMap<CharSequence, CheckboxItem>();
         for(CharSequence category : setCategories)
-            filterFields.listCategories.add(category);
+        {
+            CheckboxItem cbi = filterFields.listCategoriesItems.get(category);
+            if(cbi == null)
+                listCategoriesItemsTemp.put(category, new CheckboxItem(category.toString()));
+            else
+                listCategoriesItemsTemp.put(category, cbi);
+        }
+        filterFields.listCategoriesItems = listCategoriesItemsTemp;
+
         filterFields.startAmount = Math.max(filterFields.minAmount, filterFields.startAmount);
         filterFields.endAmount = Math.min(filterFields.maxAmount, filterFields.endAmount);
 
@@ -260,6 +271,10 @@ public class OperationAdapter extends ArrayAdapter<Operation> implements Filtera
                         continue;
                 }
 
+                CheckboxItem cbi = filterFields.listCategoriesItems.get(operation.getCategory());
+                if(cbi != null && cbi.isChecked() == false)
+                    continue;
+
                 float amount = operation.getSignedAmount();
                 if(amount < filterFields.startAmount || amount > filterFields.endAmount)
                     continue;
@@ -355,6 +370,16 @@ public class OperationAdapter extends ArrayAdapter<Operation> implements Filtera
 
         updateSort = true;
         sortSide = SORT_DESC;
+    }
+
+    public ArrayList<CheckboxItem> generateCBIList()
+    {
+        ArrayList<CheckboxItem> result = new ArrayList<CheckboxItem>();
+        for(CheckboxItem cbi : filterFields.listCategoriesItems.values())
+        {
+            result.add(new CheckboxItem(cbi));
+        }
+        return result;
     }
 }
 
