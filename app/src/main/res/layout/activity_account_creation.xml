@@ -10,6 +10,7 @@
     tools:context="com.example.jean.gerersoncompte.Activities.AccountCreationActivity">
 
     <RelativeLayout
+        android:id="@+id/acc_cre_rlo"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginLeft="50dp"
@@ -31,7 +32,7 @@
             android:textSize="12sp"
             android:textStyle="bold" />
 
-        <EditText
+        <com.example.jean.gerersoncompte.Views.EditTextErrorChecker
             android:id="@+id/acc_cre_edit_nom"
             android:layout_width="200dp"
             android:layout_height="wrap_content"
@@ -43,7 +44,10 @@
             android:inputType="textNoSuggestions"
             android:maxLength="30"
             android:singleLine="true"
-            android:textSize="22sp" />
+            android:textSize="22sp"
+            android:text="Compte"
+            app:filter="filterNotEmpty"
+            app:textError="Ce champ est vide!"/>
 
         <TextView
             android:id="@+id/acc_cre_label_solde"
@@ -57,7 +61,7 @@
             android:textSize="12sp"
             android:textStyle="bold" />
 
-        <EditText
+        <com.example.jean.gerersoncompte.Views.EditTextErrorChecker
             android:id="@+id/acc_cre_edit_solde"
             android:layout_width="200dp"
             android:layout_height="wrap_content"
@@ -69,9 +73,12 @@
             android:inputType="numberSigned|numberDecimal"
             android:maxLength="15"
             android:singleLine="true"
-            android:textSize="22sp" />
+            android:textSize="22sp"
+            android:text="0.00"
+            app:filter="filterNotEmpty"
+            app:textError="Ce champ est vide!"/>
 
-        <TextView
+        <!--TextView
             android:id="@+id/acc_cre_label_devise"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -81,21 +88,21 @@
             android:text="@string/label_devise"
             android:textColor="@color/colorWhite"
             android:textSize="12sp"
-            android:textStyle="bold" />
+            android:textStyle="bold" /-->
 
-        <Spinner
+        <!--Spinner
             android:id="@+id/acc_cre_spinner_devise"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignLeft="@+id/acc_cre_label_devise"
-            android:layout_below="@+id/acc_cre_label_devise" />
+            android:layout_below="@+id/acc_cre_label_devise" /-->
 
         <TextView
             android:id="@+id/acc_cre_label_courant"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignLeft="@+id/acc_cre_label_devise"
-            android:layout_below="@+id/acc_cre_spinner_devise"
+            android:layout_alignLeft="@+id/acc_cre_label_solde"
+            android:layout_below="@+id/acc_cre_edit_solde"
             android:layout_marginTop="25dp"
             android:text="Compte courant:"
             android:textColor="@color/colorWhite"

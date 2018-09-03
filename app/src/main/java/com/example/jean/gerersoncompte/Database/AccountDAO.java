@@ -58,10 +58,10 @@ public class AccountDAO extends BaseDAO
         return false;
     }
 
-    public void update(Account account)
+    public boolean update(Account account)
     {
         if(account == null)
-            return;
+            return false;
 
         open();
         if(mDb != null) {
@@ -74,7 +74,9 @@ public class AccountDAO extends BaseDAO
             String[] whereArgs = new String[]{String.valueOf(account.getId())};
             mDb.update(TABLE_NAME, values, whereClause, whereArgs);
             close();
+            return true;
         }
+        return false;
     }
 
     public void delete(long id)

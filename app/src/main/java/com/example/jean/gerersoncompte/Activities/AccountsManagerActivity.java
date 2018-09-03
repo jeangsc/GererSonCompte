@@ -1,22 +1,21 @@
 package com.example.jean.gerersoncompte.Activities;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
-import android.view.ContextMenu;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
 
-import com.example.jean.gerersoncompte.GSCItems.Account;
 import com.example.jean.gerersoncompte.Adapters.AccountAdapter;
+import com.example.jean.gerersoncompte.Constants;
 import com.example.jean.gerersoncompte.Database.AccountDAO;
+import com.example.jean.gerersoncompte.GSCItems.Account;
 import com.example.jean.gerersoncompte.GeneralDatas;
 import com.example.jean.gerersoncompte.R;
 import com.example.jean.gerersoncompte.Tools;
@@ -25,12 +24,10 @@ import java.util.ArrayList;
 
 public class AccountsManagerActivity extends AppCompatActivity
 {
-    private final byte deleteOption = 2;
     private ListView accountsList = null;
     private int selectedAccount = -1;
     private View selectedView = null;
     private Account currentAccount = null;
-    private boolean keepSelection = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -44,11 +41,9 @@ public class AccountsManagerActivity extends AppCompatActivity
         {
             public void onItemClick(AdapterView<?> adapter, View view, int position, long id)
             {
-                processMenuAccount(view, position);
+                processActionsDialog(view, position);
             }
         });
-        registerForContextMenu(accountsList);
-
     }
 
     @Override
@@ -83,13 +78,65 @@ public class AccountsManagerActivity extends AppCompatActivity
         adapter.notifyDataSetChanged();
     }
 
-    public void processMenuAccount(View view, int position)
+    private class OnClickUnselect implements DialogInterface.OnClickListener
     {
-        if(view != null) {
+
+        @Override
+        public void onClick(DialogInterface dialog, int which)
+        {
+            unselect();
+        }
+    }
+
+    private class OnCancelUnselect implements DialogInterface.OnCancelListener
+    {
+        @Override
+        public void onCancel(DialogInterface dialog)
+        {
+            unselect();
+        }
+    }
+
+    public void processActionsDialog(View view, int position)
+    {
+        if(view != null)
+        {
             selectedView = view;
             selectedAccount = position;
         }
-        openContextMenu(view);
+        selectedView.setBackgroundColor(ContextCompat.getColor(this, R.color.colorHighLight));
+
+        final CharSequence[] items = {getString(R.string.label_compte_courant),
+                                getString(R.string.label_modifier),
+                                getString(R.string.label_supprimer)};
+        AlertDialog dialog;
+        AlertDialog.Builder builder = new AlertDialog.Builder(this, AlertDialog.THEME_TRADITIONAL);
+        builder.setTitle("Sélectionner une action");
+        builder.setCancelable(true);
+        builder.setNeutralButton("Retour", new OnClickUnselect());
+        builder.setOnCancelListener(new OnCancelUnselect());
+        builder.setItems(items, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which)
+            {
+                CharSequence option = items[which];
+                if(option == getString(R.string.label_compte_courant))
+                {
+                    processDefineCurrentAccount();
+                    unselect();
+                }
+                else if(option == getString(R.string.label_modifier))
+                {
+                    processModifyAccount();
+                    unselect();
+                }
+                else if(option == getString(R.string.label_supprimer))
+                {
+                    deleteValidation();
+                }
+            }
+        });
+        builder.create().show();
     }
 
     public void processDefineCurrentAccount()
@@ -116,7 +163,22 @@ public class AccountsManagerActivity extends AppCompatActivity
 
     public void processModifyAccount()
     {
+        if(selectedAccount != -1)
+        {
+            AccountAdapter adapter = (AccountAdapter) accountsList.getAdapter();
+            Account account = adapter.getItem(selectedAccount);
 
+            if (account != null)
+            {
+                Intent accountCreationIntent = new Intent(AccountsManagerActivity.this, AccountCreationActivity.class);
+                accountCreationIntent.putExtra(Constants.extraAccount, account);
+                accountCreationIntent.putExtra(Constants.extraIsCurrent, (account == currentAccount) );
+                startActivity(accountCreationIntent);
+                selectedView.setBackgroundColor(ContextCompat.getColor(this, R.color.colorTransparent));
+                selectedView = null;
+                selectedAccount = -1;
+            }
+        }
     }
 
     public void processDeleteAccount()
@@ -127,14 +189,13 @@ public class AccountsManagerActivity extends AppCompatActivity
         {
             AccountAdapter adapter = (AccountAdapter) accountsList.getAdapter();
             Account account = adapter.getItem(selectedAccount);
+            unselect();
             if(account != currentAccount && account != null)
             {
                 AccountDAO accDao = AccountDAO.getInstance();
                 accDao.delete(account.getId());
                 adapter.remove(account);
                 adapter.notifyDataSetChanged();
-                selectedView = null;
-                selectedAccount = -1;
             }
             Log.d("DELETE", "deleted account");
         }
@@ -146,74 +207,29 @@ public class AccountsManagerActivity extends AppCompatActivity
         startActivity(accountCreationIntent);
     }
 
-    @Override
-    public void onCreateContextMenu(ContextMenu menu, View v,
-                                    ContextMenu.ContextMenuInfo menuInfo) {
-        super.onCreateContextMenu(menu, v, menuInfo);
-        Log.d("ContextMenu", "OnCreateContextMenu");
-        if(v.getId() == R.id.acc_man_liste_comptes && selectedView != null)
-        {
-            MenuInflater inflater = getMenuInflater();
-            inflater.inflate(R.menu.account_options, menu);
-            menu.getItem(deleteOption).getSubMenu().setHeaderTitle("Êtes-vous sûr(e)?");
-
-            selectedView.setBackgroundColor(ContextCompat.getColor(this, R.color.colorHighLight));
-        }
-        /*else if(v.getId() == R.id.acc_opt_supprimer)
-        {
-            Log.i("Clicked supprimer", "Clicked");
-        }*/
-    }
-
-    @Override
-    public boolean onContextItemSelected(MenuItem item)
+    private void deleteValidation()
     {
-        Log.d("SELECT ITEM", "on item selected");
-        Log.d("SELECT ITEM", "id selected: " + String.valueOf(item.getItemId()));
-        switch (item.getItemId()) {
-
-            case R.id.acc_opt_compte_courant: {
-                Log.d("SELECT ITEM", "define");
-                processDefineCurrentAccount();
-                break;
-            }
-
-            case R.id.acc_opt_modifier: {
-                Log.d("SELECT ITEM", "modif");
-                processModifyAccount();
-                break;
-            }
-            case R.id.acc_opt_supprimer: {
-                Log.d("SELECT ITEM", "delete");
-                keepSelection = true;
-                break;
-            }
-            case R.id.acc_opt_supprimer_oui: {
-                Log.d("SELECT ITEM", "delete oui");
+        AlertDialog.Builder builder = new AlertDialog.Builder(this, AlertDialog.THEME_TRADITIONAL);
+        builder.setTitle("Etes-vous sûr?");
+        builder.setCancelable(true);
+        builder.setPositiveButton("Oui", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which)
+            {
                 processDeleteAccount();
-                break;
             }
-            case R.id.acc_opt_supprimer_non: {
-                Log.d("SELECT ITEM", "delete non");
-                break;
-            }
-        }
-        return super.onContextItemSelected(item);
+        });
+        builder.setNegativeButton("Non", new OnClickUnselect());
+        builder.setOnCancelListener(new OnCancelUnselect());
+        builder.create().show();
     }
 
-    @Override
-    public void onContextMenuClosed(Menu menu)
+    private void unselect()
     {
-        super.onContextMenuClosed(menu);
-        Log.d("ContextMenu", "onContextMenuClosed");
-        if(!keepSelection)
-        {
-            if(selectedView != null)
-                selectedView.setBackgroundColor(ContextCompat.getColor(this, R.color.colorTransparent));
-            selectedView = null;
-            selectedAccount = -1;
-        }
-        keepSelection = false;
+        if(selectedView != null)
+            selectedView.setBackgroundColor(ContextCompat.getColor(this, R.color.colorTransparent));
+        selectedView = null;
+        selectedAccount = -1;
     }
 
     @Override

@@ -10,8 +10,8 @@
         android:title="@string/label_modifier" />
     <item
         android:id="@+id/acc_opt_supprimer"
-        android:title="@string/label_supprimer">
-        <menu>
+        android:title="@string/label_supprimer"/>
+        <!--menu>
             <item
                 android:id="@+id/acc_opt_supprimer_oui"
                 android:title="Oui" />
@@ -19,5 +19,5 @@
                 android:id="@+id/acc_opt_supprimer_non"
                 android:title="Non" />
         </menu>
-    </item>
+    </item-->
 </menu>

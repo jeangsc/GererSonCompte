@@ -9,10 +9,11 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.widget.TextView;
 
-import com.example.jean.gerersoncompte.GSCItems.Account;
+import com.example.jean.gerersoncompte.Constants;
 import com.example.jean.gerersoncompte.Database.AccountDAO;
 import com.example.jean.gerersoncompte.Database.OperationDAO;
 import com.example.jean.gerersoncompte.Database.OperationHistoryDAO;
+import com.example.jean.gerersoncompte.GSCItems.Account;
 import com.example.jean.gerersoncompte.GeneralDatas;
 import com.example.jean.gerersoncompte.R;
 import com.example.jean.gerersoncompte.Tools;
@@ -27,12 +28,10 @@ import java.util.ArrayList;
 
 public class MenuActivity extends AppCompatActivity
 {
-    private TextView m_textAccount = null;
-    private TextView m_textBalance = null;
-
-    private final static String extraIsCurrent = "EXTRA_IS_CURRENT";
-    private final static String extraAccount = "EXTRA_ACCOUNT";
-    private final static int requestCreateAccount = 1;
+    private TextView textAccount = null;
+    private TextView textBalance = null;
+    private TextView textToCome = null;
+    private TextView textNextBalance = null;
 
     private Account account = null;
 
@@ -46,8 +45,10 @@ public class MenuActivity extends AppCompatActivity
         initDB();
 
         updateDate();
-        m_textAccount = (TextView) findViewById(R.id.men_value_nom);
-        m_textBalance = (TextView) findViewById(R.id.men_value_solde);
+        textAccount = (TextView) findViewById(R.id.men_value_nom);
+        textBalance = (TextView) findViewById(R.id.men_value_solde);
+        textToCome  = (TextView) findViewById(R.id.men_value_avenir);
+        textNextBalance = (TextView) findViewById(R.id.men_value_prochainsolde);
 
         copyDBFile();
     }
@@ -65,15 +66,15 @@ public class MenuActivity extends AppCompatActivity
         else //sinon, on en créé un
         {
             Intent accountCreationIntent = new Intent(MenuActivity.this, AccountCreationActivity.class);
-            accountCreationIntent.putExtra(extraIsCurrent, true);
-            startActivityForResult(accountCreationIntent, requestCreateAccount);
+            accountCreationIntent.putExtra(Constants.extraIsCurrent, true);
+            startActivityForResult(accountCreationIntent, Constants.requestCreateAccount);
         }
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data)
     {
-        if(requestCode == requestCreateAccount && resultCode != RESULT_OK)
+        if(requestCode == Constants.requestCreateAccount && resultCode != RESULT_OK)
             finish();
     }
 
@@ -81,9 +82,16 @@ public class MenuActivity extends AppCompatActivity
     {
         String accountName = (account != null) ? account.getName() : "";
         float  balance     = (account != null) ? account.getBalance() : 0.0f;
+        float  toCome      = (account != null) ? account.getToCome() : 0.0f;
+        float  nextBalance = balance + toCome;
+        String currency    = (account != null) ? account.getCurrency() : "EUR";
+        int    colorToCome = Tools.getColorFromSign(toCome, R.color.colorGreen, R.color.colorRed, R.color.colorBlack, this);
 
-        m_textAccount.setText(accountName);
-        m_textBalance.setText(Tools.getFormattedAmount(balance, "€"));
+        textAccount.setText(accountName);
+        textBalance.setText(Tools.getFormattedAmount(balance, currency));
+        textToCome.setText(Tools.getFormattedAmount(toCome, currency));
+        textToCome.setTextColor(colorToCome);
+        textNextBalance.setText(Tools.getFormattedAmount(nextBalance, currency));
     }
 
     public void processButtonCompte(View v)
@@ -94,7 +102,7 @@ public class MenuActivity extends AppCompatActivity
     public void processButtonOperations(View v)
     {
         Intent operationsManagerIntent = new Intent(MenuActivity.this, OperationsManagerActivity.class);
-        operationsManagerIntent.putExtra(extraAccount, account);
+        operationsManagerIntent.putExtra(Constants.extraAccount, account);
         startActivity(operationsManagerIntent);
     }
 

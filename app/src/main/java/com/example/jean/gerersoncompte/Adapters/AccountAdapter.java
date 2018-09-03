@@ -63,10 +63,10 @@ public class AccountAdapter extends ArrayAdapter<Account>
         int    colorToCome    = Tools.getColorFromSign(accToCome, R.color.colorGreen, R.color.colorRed, R.color.colorBlack, getContext());
 
         viewHolder.textAccount.setText(accName);
-        viewHolder.textBalance.setText(Tools.getFormattedAmount(accBalance, "€"));
-        viewHolder.textToCome.setText(Tools.getFormattedAmount(accToCome, "€", true));
+        viewHolder.textBalance.setText(Tools.getFormattedAmount(accBalance, "EUR"));
+        viewHolder.textToCome.setText(Tools.getFormattedAmount(accToCome, "EUR", true));
         viewHolder.textToCome.setTextColor(colorToCome);
-        viewHolder.textNextBalance.setText(Tools.getFormattedAmount(accNextBalance, "€"));
+        viewHolder.textNextBalance.setText(Tools.getFormattedAmount(accNextBalance, "EUR"));
         viewHolder.imageStar.setVisibility(starVisibility);
 
         return convertView;

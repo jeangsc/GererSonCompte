@@ -2,8 +2,12 @@ package com.example.jean.gerersoncompte.Views;
 
 import android.content.Context;
 import android.content.res.TypedArray;
+import android.support.constraint.ConstraintLayout;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.View;
+import android.view.ViewGroup;
+import android.view.ViewParent;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -19,6 +23,9 @@ public class EditTextErrorChecker extends android.support.v7.widget.AppCompatEdi
     public static final byte FILTER_NOT_EMPTY   = 0b0001;
     public static final byte FILTER_NOT_ZERO    = 0b0010;
     public static final byte FILTER_DATE_EXISTS = 0b0100;
+
+    public static final int LAYOUT_TYPE_RELATIVE = 0;
+    public static final int LAYOUT_TYPE_CONSTRAINT = 1;
 
     private final float textFactor = 0.4f;
 
@@ -86,11 +93,15 @@ public class EditTextErrorChecker extends android.support.v7.widget.AppCompatEdi
         textError.setTextColor(getResources().getColor(R.color.colorRedError));
         textError.setVisibility(INVISIBLE);
 
-        RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT,
+        ViewParent vp = getParent();
+        if(vp != null)
+            Log.i("Parent", getParent().toString());
+
+        /*RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT,
                                                                              RelativeLayout.LayoutParams.WRAP_CONTENT);
         params.addRule(RelativeLayout.ALIGN_LEFT, this.getId());
         params.addRule(RelativeLayout.BELOW, this.getId());
-        textError.setLayoutParams(params);
+        textError.setLayoutParams(params);*/
     }
 
     public void setTextError(String strError)
@@ -106,6 +117,29 @@ public class EditTextErrorChecker extends android.support.v7.widget.AppCompatEdi
             int visibility = isError ? VISIBLE : INVISIBLE;
             textError.setVisibility(visibility);
         }
+    }
+
+    public void addToLayout(ViewGroup layout)
+    {
+        if(layout instanceof RelativeLayout)
+        {
+            RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT,
+                    RelativeLayout.LayoutParams.WRAP_CONTENT);
+            params.addRule(RelativeLayout.ALIGN_LEFT, this.getId());
+            params.addRule(RelativeLayout.BELOW, this.getId());
+            textError.setLayoutParams(params);
+        }
+        else if(layout instanceof ConstraintLayout)
+        {
+            ConstraintLayout.LayoutParams params = new ConstraintLayout.LayoutParams(ConstraintLayout.LayoutParams.WRAP_CONTENT,
+                    ConstraintLayout.LayoutParams.WRAP_CONTENT);
+            params.leftToLeft = this.getId();
+            params.topToBottom = this.getId();
+            textError.setLayoutParams(params);
+            Log.i("params set", "yes");
+        }
+        if(textError != null)
+            layout.addView(textError);
     }
 
     public TextView getTextError()

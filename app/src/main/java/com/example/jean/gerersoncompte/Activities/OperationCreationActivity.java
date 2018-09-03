@@ -3,17 +3,16 @@ package com.example.jean.gerersoncompte.Activities;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.RadioGroup;
 import android.widget.RelativeLayout;
 
 import com.example.jean.gerersoncompte.Constants;
-import com.example.jean.gerersoncompte.GSCItems.Account;
 import com.example.jean.gerersoncompte.Database.OperationDAO;
-import com.example.jean.gerersoncompte.GeneralDatas;
+import com.example.jean.gerersoncompte.GSCItems.Account;
 import com.example.jean.gerersoncompte.GSCItems.Operation;
+import com.example.jean.gerersoncompte.GeneralDatas;
 import com.example.jean.gerersoncompte.R;
 import com.example.jean.gerersoncompte.Tools;
 import com.example.jean.gerersoncompte.Views.EditTextDate;
@@ -50,9 +49,9 @@ public class OperationCreationActivity extends AppCompatActivity
         editExecDate = (EditTextDate) findViewById(R.id.ope_cre_edit_execdate);
         editECExecDate = editExecDate.getEditText();
 
-        currentLayout.addView(editName.getTextError());
-        currentLayout.addView(editCategory.getTextError());
-        currentLayout.addView(editAmount.getTextError());
+        editName.addToLayout(currentLayout);
+        editCategory.addToLayout(currentLayout);
+        editAmount.addToLayout(currentLayout);
 
         initOperation();
 
@@ -90,6 +89,8 @@ public class OperationCreationActivity extends AppCompatActivity
                 isNew = true;
                 operation = new Operation(opeName, account.getId());
             }
+            else
+                operation.setName(opeName);
             operation.setCategory(opeCategory);
             operation.setAmount(opeAmount);
             operation.setGain(opeIsGain);
