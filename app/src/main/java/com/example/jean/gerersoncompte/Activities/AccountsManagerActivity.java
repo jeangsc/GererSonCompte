@@ -29,6 +29,24 @@ public class AccountsManagerActivity extends AppCompatActivity
     private View selectedView = null;
     private Account currentAccount = null;
 
+    private class OnClickUnselect implements DialogInterface.OnClickListener
+    {
+        @Override
+        public void onClick(DialogInterface dialog, int which)
+        {
+            unselect();
+        }
+    }
+
+    private class OnCancelUnselect implements DialogInterface.OnCancelListener
+    {
+        @Override
+        public void onCancel(DialogInterface dialog)
+        {
+            unselect();
+        }
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
@@ -76,25 +94,6 @@ public class AccountsManagerActivity extends AppCompatActivity
         }
 
         adapter.notifyDataSetChanged();
-    }
-
-    private class OnClickUnselect implements DialogInterface.OnClickListener
-    {
-
-        @Override
-        public void onClick(DialogInterface dialog, int which)
-        {
-            unselect();
-        }
-    }
-
-    private class OnCancelUnselect implements DialogInterface.OnCancelListener
-    {
-        @Override
-        public void onCancel(DialogInterface dialog)
-        {
-            unselect();
-        }
     }
 
     public void processActionsDialog(View view, int position)

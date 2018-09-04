@@ -11,7 +11,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 public abstract class BaseDAO extends SQLiteOpenHelper
 {
     protected static final String dbname = "database.db";
-    protected static final int version = 1;
+    protected static final int version = 2;
     protected SQLiteDatabase mDb = null;
 
     //TABLE ACCOUNTS
@@ -35,7 +35,8 @@ public abstract class BaseDAO extends SQLiteOpenHelper
                     "CATEGORIE VARCHAR(30)," +
                     "AMOUNT DECIMAL(15,2)," +
                     "ISGAIN SMALLINT," +
-                    "EXECDATE VARCHAR(8));";
+                    "EXECDATE VARCHAR(8)," +
+                    "SCHEDULEID BIGINT DEFAULT 0);";
     public static final String OPERATION_TABLE_DROP = "DROP TABLE IF EXISTS " + OPERATION_TABLE_NAME + ";";
 
     //TABLE OPERATIONS_HISTORY
@@ -48,7 +49,8 @@ public abstract class BaseDAO extends SQLiteOpenHelper
                     "CATEGORIE VARCHAR(30)," +
                     "AMOUNT DECIMAL(15,2)," +
                     "ISGAIN SMALLINT," +
-                    "EXECDATE VARCHAR(8));";
+                    "EXECDATE VARCHAR(8)," +
+                    "SCHEDULEID BIGINT DEFAULT 0);";
     public static final String OPERATION_HISTORY_TABLE_DROP = "DROP TABLE IF EXISTS " + OPERATION_HISTORY_TABLE_NAME + ";";
 
     protected BaseDAO(Context context)
@@ -67,15 +69,28 @@ public abstract class BaseDAO extends SQLiteOpenHelper
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion)
     {
-        dropTables(db);
-        onCreate(db);
+        //dropTables(db);
+        //onCreate(db);
+        int version = oldVersion + 1;
+        while(version <= newVersion)
+        {
+            switch (version)
+            {
+                case 2:
+                {
+                    db.execSQL("ALTER TABLE " + OPERATION_TABLE_NAME + " ADD COLUMN SCHEDULEID BIGINT DEFAULT 0;");
+                    db.execSQL("ALTER TABLE " + OPERATION_HISTORY_TABLE_NAME + " ADD COLUMN SCHEDULEID BIGINT DEFAULT 0;");
+                }
+            }
+            version++;
+        }
     }
 
     @Override
     public void onDowngrade(SQLiteDatabase db, int oldVersion, int newVersion)
     {
-        dropTables(db);
-        onCreate(db);
+        //dropTables(db);
+        //onCreate(db);
     }
 
     public SQLiteDatabase open()

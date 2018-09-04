@@ -1,9 +1,9 @@
 <resources>
     <string name="app_name">GererSonCompte</string>
-    <string name="boutton_ajout">Créer un compte</string>
-    <string name="boutton_ajout_operation">Créer une opération</string>
-    <string name="boutton_gerer_operations">Gérer mes opérations</string>
-    <string name="boutton_resume_compte">Résumé du compte</string>
+    <string name="bouton_ajout">Créer un compte</string>
+    <string name="bouton_ajout_operation">Créer une opération</string>
+    <string name="bouton_gerer_operations">Gérer mes opérations</string>
+    <string name="bouton_details_compte">Détails du compte</string>
     <string name="fichier_donnees_generales">general_datas.s</string>
     <string name="label_a_venir">A venir:</string>
     <string name="label_categorie">Catégorie:</string>
@@ -35,5 +35,6 @@
     <string name="dates_d_execution">Dates d\'exécution</string>
     <string name="appliquer">Appliquer</string>
     <string name="tout_selectionner">Tout sélectionner</string>
+    <string name="bouton_gerer_echeanciers">Gérer mes échéanciers</string>
 
 </resources>

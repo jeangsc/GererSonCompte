@@ -26,7 +26,8 @@
             android:name=".Activities.OperationsManagerActivity"
             android:windowSoftInputMode="adjustNothing" />
         <activity android:name=".Activities.OperationCreationActivity" />
-
+        <activity android:name=".Activities.SchedulesManagerActivity" />
+        <activity android:name=".Activities.AccountDetailsActivity"></activity>
     </application>
 
 </manifest>

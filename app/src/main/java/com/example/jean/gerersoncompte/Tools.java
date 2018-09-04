@@ -63,14 +63,6 @@ public class Tools
         return color;
     }
 
-    public static String getDate()
-    {
-        Calendar calendar = Calendar.getInstance();
-        SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");
-        String dateFormatted = format.format(calendar.getTime());
-        return dateFormatted;
-    }
-
     public static Object getObjFromFile(Context context, String path)
     {
         Object obj = null;
@@ -132,9 +124,33 @@ public class Tools
         return succeed;
     }
 
-    public static String addDays(String date, int days)
+    public static String getDate()
     {
-        return date;
+        Calendar calendar = Calendar.getInstance();
+        SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");
+        String dateFormatted = format.format(calendar.getTime());
+        return dateFormatted;
+    }
+
+    public static int getYear(String date)
+    {
+        if(date.length() < 10)
+            return -1;
+        return Integer.valueOf(date.substring(6, 10));
+    }
+
+    public static int getMonth(String date)
+    {
+        if(date.length() < 5)
+            return -1;
+        return Integer.valueOf(date.substring(3, 5));
+    }
+
+    public static int getDay(String date)
+    {
+        if(date.length() < 2)
+            return -1;
+        return Integer.valueOf(date.substring(0, 2));
     }
 
     public static long getMillis(String dateStr)
@@ -150,6 +166,57 @@ public class Tools
             e.printStackTrace();
         }
         return (date != null) ? date.getTime() : -1;
+    }
+
+    public static String addYears(String date, int years)
+    {
+        Calendar calendar = Calendar.getInstance();
+        calendar.set(getYear(date), getMonth(date)-1, getDay(date));
+        calendar.add(Calendar.YEAR, years);
+        SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");
+        return format.format(calendar.getTime());
+    }
+
+    public static String addMonths(String date, int months)
+    {
+        Calendar calendar = Calendar.getInstance();
+        calendar.set(getYear(date), getMonth(date)-1, getDay(date));
+        calendar.add(Calendar.MONTH, months);
+        SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");
+        return format.format(calendar.getTime());
+    }
+
+    public static String addDays(String date, int days)
+    {
+        Calendar calendar = Calendar.getInstance();
+        calendar.set(getYear(date), getMonth(date)-1, getDay(date));
+        calendar.add(Calendar.DAY_OF_MONTH, days);
+        SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");
+        return format.format(calendar.getTime());
+    }
+
+    public static String addUnit(String date, int amount, int unit)
+    {
+        String result = date;
+        switch (unit)
+        {
+            case Constants.UNIT_TIME_DAY:
+            {
+                result = addDays(date, amount);
+                break;
+            }
+            case Constants.UNIT_TIME_MONTH:
+            {
+                result = addMonths(date, amount);
+                break;
+            }
+            case Constants.UNIT_TIME_YEAR:
+            {
+                result = addYears(date, amount);
+                break;
+            }
+        }
+        return result;
     }
 
     public static boolean expiredDate(String execDate, String refDate)
@@ -239,27 +306,6 @@ public class Tools
         String format1 = date1.substring(6, 10) + date1.substring(3, 5) + date1.substring(0, 2);
         String format2 = date2.substring(6, 10) + date2.substring(3, 5) + date2.substring(0, 2);
         return format1.compareTo(format2);
-    }
-
-    public static int getYear(String date)
-    {
-        if(date.length() < 10)
-            return -1;
-        return Integer.valueOf(date.substring(6, 10));
-    }
-
-    public static int getMonth(String date)
-    {
-        if(date.length() < 5)
-            return -1;
-        return Integer.valueOf(date.substring(3, 5));
-    }
-
-    public static int getDay(String date)
-    {
-        if(date.length() < 2)
-            return -1;
-        return Integer.valueOf(date.substring(0, 2));
     }
 
     public static String floatFormat(float val, int decimals)

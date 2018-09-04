@@ -5,6 +5,10 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MotionEvent;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.ImageButton;
+import android.widget.ListPopupWindow;
 import android.widget.RadioGroup;
 import android.widget.RelativeLayout;
 
@@ -18,17 +22,21 @@ import com.example.jean.gerersoncompte.Tools;
 import com.example.jean.gerersoncompte.Views.EditTextDate;
 import com.example.jean.gerersoncompte.Views.EditTextErrorChecker;
 
+import java.util.TreeSet;
+
 public class OperationCreationActivity extends AppCompatActivity
 {
-    private EditTextErrorChecker editName = null;
-    private EditTextErrorChecker editCategory = null;
-    private EditTextErrorChecker editAmount = null;
-    private RadioGroup radGrpSide = null;
+    private EditTextErrorChecker editName       = null;
+    private EditTextErrorChecker editCategory   = null;
+    private ImageButton buttonDropCategories         = null;
+    private EditTextErrorChecker editAmount     = null;
+    private RadioGroup radGrpSide               = null;
     private EditTextErrorChecker editECExecDate = null;
-    private EditTextDate editExecDate = null;
+    private EditTextDate editExecDate           = null;
 
     private Account account = null;
     private Operation operation = null;
+    private TreeSet<CharSequence> categories = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -41,9 +49,11 @@ public class OperationCreationActivity extends AppCompatActivity
 
         account = (Account)intent.getSerializableExtra(Constants.extraAccount);
         operation = (Operation)intent.getSerializableExtra(Constants.extraOperation);
+        categories = (TreeSet<CharSequence>) intent.getSerializableExtra(Constants.extraCategories);
 
         editName = (EditTextErrorChecker) findViewById(R.id.ope_cre_edit_nom);
         editCategory = (EditTextErrorChecker) findViewById(R.id.ope_cre_edit_categorie);
+        buttonDropCategories = (ImageButton) findViewById(R.id.ope_cre_but_drop_categories);
         editAmount = (EditTextErrorChecker) findViewById(R.id.ope_cre_edit_montant);
         radGrpSide = (RadioGroup) findViewById(R.id.ope_cre_rad_grp_sens);
         editExecDate = (EditTextDate) findViewById(R.id.ope_cre_edit_execdate);
@@ -68,6 +78,30 @@ public class OperationCreationActivity extends AppCompatActivity
             radGrpSide.check(operation.isGain() ? R.id.ope_cre_rad_btn_credit : R.id.ope_cre_rad_btn_debit);
             editExecDate.setDate(operation.getExecDate());
         }
+    }
+
+    public void processDropCategories(View view)
+    {
+        if(categories.isEmpty())
+            return;
+
+        CharSequence[] arrayCategories = categories.toArray(new CharSequence[categories.size()]);
+        ArrayAdapter<CharSequence> adapter = new ArrayAdapter<CharSequence>(this, R.layout.support_simple_spinner_dropdown_item, arrayCategories);
+        final ListPopupWindow popup = new ListPopupWindow(this);
+        popup.setAnchorView(editCategory);
+        popup.setAdapter(adapter);
+        popup.setWidth(editCategory.getMeasuredWidth());
+        popup.setHeight(editCategory.getMeasuredHeight() * 5);
+        popup.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id)
+            {
+                CharSequence category = (CharSequence)popup.getListView().getAdapter().getItem(position);
+                editCategory.setText(category);
+                popup.dismiss();
+            }
+        });
+        popup.show();
     }
 
     public void processCreateOperation(View view)

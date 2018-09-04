@@ -55,6 +55,7 @@ public class OperationDAO extends BaseDAO
             values.put("AMOUNT", operation.getAmount());
             values.put("ISGAIN", (operation.isGain() ? 1 : 0));
             values.put("EXECDATE", operation.getExecDate());
+            values.put("SCHEDULEID", operation.getScheduleId());
             mDb.insert(TABLE_NAME, null, values);
             close();
             return true;
@@ -111,7 +112,8 @@ public class OperationDAO extends BaseDAO
                 "CATEGORIE, " +
                 "AMOUNT, " +
                 "ISGAIN, " +
-                "EXECDATE " +
+                "EXECDATE, " +
+                "SCHEDULEID " +
                 "FROM " + TABLE_NAME + " " +
                 "WHERE " + TABLE_KEY + " = ?";
 
@@ -141,44 +143,11 @@ public class OperationDAO extends BaseDAO
                 "CATEGORIE, " +
                 "AMOUNT, " +
                 "ISGAIN, " +
-                "EXECDATE " +
+                "EXECDATE, " +
+                "SCHEDULEID " +
                 "FROM " + TABLE_NAME + " " +
                 "WHERE ACCID = ? " +
                 "ORDER BY " + TABLE_KEY + " ASC";
-
-        String[] whereArgs = new String[]{ String.valueOf(accid)};
-        Cursor cursor = mDb.rawQuery(query, whereArgs);
-
-        while(cursor.moveToNext())
-        {
-            Operation operation = cursorToOperation(cursor);
-            if(operation != null)
-                opeList.add(operation);
-        }
-
-        close();
-        return opeList;
-    }
-
-    public ArrayList<Operation> selectSorted(long accid, String field, String side)
-    {
-        ArrayList<Operation> opeList = new ArrayList<Operation>();
-        open();
-
-        if(mDb == null)
-            return opeList;
-
-        String query = "SELECT " +
-                TABLE_KEY + ", " +
-                "ACCID, " +
-                "NAME, " +
-                "CATEGORIE, " +
-                "AMOUNT, " +
-                "ISGAIN, " +
-                "EXECDATE " +
-                "FROM " + TABLE_NAME + " " +
-                "WHERE ACCID = ? " +
-                "ORDER BY " + field + " " + side;
 
         String[] whereArgs = new String[]{ String.valueOf(accid)};
         Cursor cursor = mDb.rawQuery(query, whereArgs);
@@ -233,6 +202,7 @@ public class OperationDAO extends BaseDAO
         operation.setAmount(Tools.getFloatFromColumn(cursor, "AMOUNT", 0.0f));
         operation.setGain(Tools.getBooleanFromColumn(cursor, "ISGAIN", false));
         operation.setExecDate(Tools.getStringFromColumn(cursor, "EXECDATE", "01/01/2018"));
+        operation.setScheduleId(Tools.getLongFromColumn(cursor, "SCHEDULEID", 0L));
         return operation;
     }
 }

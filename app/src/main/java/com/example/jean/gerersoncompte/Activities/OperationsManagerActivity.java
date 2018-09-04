@@ -8,10 +8,6 @@ import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
-import android.view.ContextMenu;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.AdapterView;
@@ -34,6 +30,7 @@ import com.example.jean.gerersoncompte.Views.GSCDialog;
 import com.example.jean.gerersoncompte.Views.SeekBarRangeValues;
 
 import java.util.ArrayList;
+import java.util.TreeSet;
 
 public class OperationsManagerActivity extends AppCompatActivity
 {
@@ -47,6 +44,24 @@ public class OperationsManagerActivity extends AppCompatActivity
     private int selectedOperation = -1;
     private View selectedView = null;
     private int selectedSortField = -1;
+
+    private class OnClickUnselect implements DialogInterface.OnClickListener
+    {
+        @Override
+        public void onClick(DialogInterface dialog, int which)
+        {
+            unselect();
+        }
+    }
+
+    private class OnCancelUnselect implements DialogInterface.OnCancelListener
+    {
+        @Override
+        public void onCancel(DialogInterface dialog)
+        {
+            unselect();
+        }
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -83,10 +98,9 @@ public class OperationsManagerActivity extends AppCompatActivity
         {
             public void onItemClick(AdapterView<?> adapter, View view, int position, long id)
             {
-                processMenuOperation(view, position);
+                processActionsDialog(view, position);
             }
         });
-        registerForContextMenu(operationsList);
     }
 
     @Override
@@ -106,8 +120,6 @@ public class OperationsManagerActivity extends AppCompatActivity
         else if(requestCode == Constants.requestModifyOperation && resultCode == RESULT_OK)
         {
             account = (Account)data.getSerializableExtra(Constants.extraAccount);
-            //Operation operation = (Operation)data.getSerializableExtra(Constants.extraOperation);
-
         }
     }
 
@@ -135,13 +147,41 @@ public class OperationsManagerActivity extends AppCompatActivity
         adapter.notifyDataSetChanged();
     }
 
-    public void processMenuOperation(View view, int position)
+    public void processActionsDialog(View view, int position)
     {
         if(view != null) {
             selectedView = view;
             selectedOperation = position;
         }
-        openContextMenu(view);
+        //openContextMenu(view);
+        updateBackgroundView(true);
+
+        final CharSequence[] items = {getString(R.string.label_modifier),
+                                      getString(R.string.label_supprimer)};
+        AlertDialog dialog;
+        AlertDialog.Builder builder = new AlertDialog.Builder(this, AlertDialog.THEME_TRADITIONAL);
+        builder.setTitle("Sélectionner une action");
+        builder.setCancelable(true);
+        builder.setNeutralButton("Retour", new OperationsManagerActivity.OnClickUnselect());
+        builder.setOnCancelListener(new OperationsManagerActivity.OnCancelUnselect());
+        builder.setItems(items, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which)
+            {
+                CharSequence option = items[which];
+                if(option == getString(R.string.label_modifier))
+                {
+                    processModifyOperation();
+                    unselect();
+                }
+                else if(option == getString(R.string.label_supprimer))
+                {
+                    processDeleteOperation();
+                    unselect();
+                }
+            }
+        });
+        builder.create().show();
     }
 
     public void processFilterOperations(View view)
@@ -162,9 +202,12 @@ public class OperationsManagerActivity extends AppCompatActivity
             Operation operation = adapter.getItem(selectedOperation);
             if(operation != null)
             {
+                TreeSet<CharSequence> categoryList = adapter.generateCategoryList();
+
                 Intent operationCreationIntent = new Intent(OperationsManagerActivity.this, OperationCreationActivity.class);
                 operationCreationIntent.putExtra(Constants.extraAccount, account);
                 operationCreationIntent.putExtra(Constants.extraOperation, operation);
+                operationCreationIntent.putExtra(Constants.extraCategories, categoryList);
                 startActivityForResult(operationCreationIntent, Constants.requestModifyOperation);
 
                 selectedOperation = -1;
@@ -181,14 +224,13 @@ public class OperationsManagerActivity extends AppCompatActivity
         {
             OperationAdapter adapter = (OperationAdapter) operationsList.getAdapter();
             Operation operation = adapter.getItem(selectedOperation);
+            unselect();
             if(operation != null)
             {
                 OperationDAO opeDAO = OperationDAO.getInstance();
                 opeDAO.delete(operation.getId());
                 adapter.remove(operation);
                 adapter.notifyDataSetChanged();
-                selectedOperation = -1;
-                selectedView = null;
             }
             Log.d("DELETE", "deleted operation");
         }
@@ -196,21 +238,13 @@ public class OperationsManagerActivity extends AppCompatActivity
 
     public void processCreateOperation(View view)
     {
+        OperationAdapter adapter = (OperationAdapter) operationsList.getAdapter();
+        TreeSet<CharSequence> categoryList = adapter.generateCategoryList();
+
         Intent operationCreationIntent = new Intent(OperationsManagerActivity.this, OperationCreationActivity.class);
         operationCreationIntent.putExtra(Constants.extraAccount, account);
+        operationCreationIntent.putExtra(Constants.extraCategories, categoryList);
         startActivityForResult(operationCreationIntent, Constants.requestNewOperation);
-    }
-
-    @Override
-    public void onCreateContextMenu(ContextMenu menu, View v,
-                                    ContextMenu.ContextMenuInfo menuInfo) {
-        super.onCreateContextMenu(menu, v, menuInfo);
-
-        if(selectedView != null) {
-            MenuInflater inflater = getMenuInflater();
-            inflater.inflate(R.menu.operation_options, menu);
-            updateBackgroundView(true);
-        }
     }
 
     @Override
@@ -387,29 +421,7 @@ public class OperationsManagerActivity extends AppCompatActivity
         }
     }
 
-    @Override
-    public boolean onContextItemSelected(MenuItem item)
-    {
-        Log.d("SELECT ITEM", "on item selected");
-        Log.d("SELECT ITEM", "id selected: " + String.valueOf(item.getItemId()));
-        switch (item.getItemId()) {
-
-            case R.id.ope_opt_modifier: {
-                Log.d("SELECT ITEM", "modif");
-                processModifyOperation();
-                break;
-            }
-            case R.id.ope_opt_supprimer: {
-                Log.d("SELECT ITEM", "delete");
-                processDeleteOperation();
-                break;
-            }
-        }
-        return super.onContextItemSelected(item);
-    }
-
-    @Override
-    public void onContextMenuClosed(Menu menu)
+    private void unselect()
     {
         updateBackgroundView(false);
         selectedView = null;

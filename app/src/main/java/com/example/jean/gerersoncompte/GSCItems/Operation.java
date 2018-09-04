@@ -9,22 +9,26 @@ public class Operation implements Serializable
 {
     private long id;
     private long accId;
+    private long scheduleId;
     private String name;
     private String category;
     private float amount;
     private boolean isGain;
     private String execDate;
+    private Schedule schedule;
     private transient boolean executed;
 
     public Operation()
     {
         this.id = 0;
         this.accId = 0;
+        this.scheduleId = 0;
         this.name = "";
         this.category = "";
         this.amount = 0.0f;
         this.isGain = false;
         this.execDate = "01/01/2018";
+        this.schedule = null;
         this.executed = false;
     }
 
@@ -33,11 +37,13 @@ public class Operation implements Serializable
         OperationDAO opeDAO = OperationDAO.getInstance();
         this.id = opeDAO.getSeqID();
         this.accId = accId;
+        this.scheduleId = 0;
         this.name = name;
         this.category = "";
         this.amount = 0.0f;
         this.isGain = false;
         this.execDate = "01/01/2018";
+        this.schedule = null;
         this.executed = false;
     }
 
@@ -59,6 +65,14 @@ public class Operation implements Serializable
 
     public String getName() {
         return name;
+    }
+
+    public long getScheduleId() {
+        return this.scheduleId;
+    }
+
+    public void setScheduleId(long scheduleId) {
+        this.scheduleId = scheduleId;
     }
 
     public void setName(String name) {
@@ -97,6 +111,14 @@ public class Operation implements Serializable
         this.execDate = execDate;
     }
 
+
+    public Schedule getSchedule() {
+        return this.schedule;
+    }
+
+    public void setSchedule(Schedule schedule) {
+        this.schedule = schedule;
+    }
 
     public boolean isExecuted() {
         return this.executed;

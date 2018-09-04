@@ -4,17 +4,17 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/background_design1"
     android:focusable="true"
     android:focusableInTouchMode="true"
-    android:background="@drawable/background_design1"
     tools:context="com.example.jean.gerersoncompte.Activities.OperationCreationActivity">
 
     <RelativeLayout
         android:id="@+id/ope_cre_rlo"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="50dp"
-        android:layout_marginRight="50dp"
+        android:layout_marginLeft="30dp"
+        android:layout_marginRight="30dp"
         android:layout_marginTop="50dp"
         android:background="@drawable/window_design1"
         app:layout_constraintLeft_toLeftOf="parent"
@@ -44,10 +44,10 @@
             android:inputType="textNoSuggestions"
             android:maxLength="30"
             android:singleLine="true"
-            android:textSize="22sp"
             android:text="Opération"
+            android:textSize="22sp"
             app:filter="filterNotEmpty"
-            app:textError="Ce champ est vide!"/>
+            app:textError="Ce champ est vide!" />
 
         <TextView
             android:id="@+id/ope_cre_label_categorie"
@@ -73,10 +73,22 @@
             android:inputType="textNoSuggestions"
             android:maxLength="30"
             android:singleLine="true"
-            android:textSize="22sp"
             android:text="Catégorie"
+            android:textSize="22sp"
             app:filter="filterNotEmpty"
-            app:textError="Ce champ est vide!"/>
+            app:textError="Ce champ est vide!" />
+
+        <ImageButton
+            android:id="@+id/ope_cre_but_drop_categories"
+            android:layout_width="30dp"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@+id/ope_cre_edit_categorie"
+            android:layout_alignTop="@+id/ope_cre_edit_categorie"
+            android:layout_alignBottom="@+id/ope_cre_edit_categorie"
+            android:src="@drawable/dropdown"
+            android:scaleType="fitCenter"
+            android:background="@color/colorTransparent"
+            android:onClick="processDropCategories"/>
 
         <TextView
             android:id="@+id/ope_cre_label_montant"
@@ -102,10 +114,10 @@
             android:inputType="numberDecimal"
             android:maxLength="15"
             android:singleLine="true"
-            android:textSize="22sp"
             android:text="1.00"
+            android:textSize="22sp"
             app:filter="filterNotEmpty|filterNotZero"
-            app:textError="Montant invalide!"/>
+            app:textError="Montant invalide!" />
 
         <RadioGroup
             android:id="@+id/ope_cre_rad_grp_sens"
@@ -115,18 +127,20 @@
             android:layout_below="@+id/ope_cre_edit_montant"
             android:layout_marginTop="20dp"
             android:checkedButton="@+id/ope_cre_rad_btn_credit">
+
             <RadioButton
                 android:id="@+id/ope_cre_rad_btn_credit"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Crédit"
                 android:textColor="@color/colorWhite" />
+
             <RadioButton
                 android:id="@+id/ope_cre_rad_btn_debit"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Débit"
-                android:textColor="@color/colorWhite"/>
+                android:textColor="@color/colorWhite" />
         </RadioGroup>
 
 
@@ -147,7 +161,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignLeft="@+id/ope_cre_label_execdate"
-            android:layout_below="@+id/ope_cre_label_execdate"/>
+            android:layout_below="@+id/ope_cre_label_execdate" />
 
         <Button
             android:id="@+id/acc_cre_bouton_valider"

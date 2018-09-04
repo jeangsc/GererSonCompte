@@ -6,7 +6,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.CheckBox;
 import android.widget.Filter;
 import android.widget.Filterable;
 import android.widget.TextView;
@@ -88,9 +87,7 @@ public class OperationAdapter extends ArrayAdapter<Operation> implements Filtera
         FilterFields()
         {
             checkAll = true;
-            //listCategories = new ArrayList<CharSequence>();
             listCategoriesItems = new HashMap<CharSequence, CheckboxItem>();
-            //listCategoriesItems = new ArrayList<CheckboxListAdapter.CheckboxItem>();
             reset();
             startAmount = minAmount;
             endAmount = maxAmount;
@@ -380,6 +377,11 @@ public class OperationAdapter extends ArrayAdapter<Operation> implements Filtera
             result.add(new CheckboxItem(cbi));
         }
         return result;
+    }
+
+    public TreeSet<CharSequence> generateCategoryList()
+    {
+        return new TreeSet<CharSequence>(filterFields.listCategoriesItems.keySet());
     }
 }
 

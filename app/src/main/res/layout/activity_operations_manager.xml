@@ -70,7 +70,7 @@
         android:id="@+id/ope_man_bouton_ajout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/boutton_ajout_operation"
+        android:text="@string/bouton_ajout_operation"
         android:textSize="14sp"
         android:textColor="@color/colorWhite"
         android:visibility="visible"

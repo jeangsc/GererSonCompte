@@ -1,5 +1,7 @@
 package com.example.jean.gerersoncompte.GSCItems;
 
+import android.util.Log;
+
 import com.example.jean.gerersoncompte.Database.AccountDAO;
 import com.example.jean.gerersoncompte.Database.OperationDAO;
 import com.example.jean.gerersoncompte.Database.OperationHistoryDAO;
@@ -109,6 +111,8 @@ public class Account implements Serializable
         if(operation == null)
             return;
 
+        Log.i("Tomorrow", tomorrowDate);
+
         String execDate = operation.getExecDate();
         if(operation.isExecuted())
         {
@@ -122,6 +126,7 @@ public class Account implements Serializable
         }
         else if(Tools.expiredDate(execDate, tomorrowDate))
         {
+            Log.i("Tomorrow", "validated");
             toCome += operation.getSignedAmount();
         }
     }

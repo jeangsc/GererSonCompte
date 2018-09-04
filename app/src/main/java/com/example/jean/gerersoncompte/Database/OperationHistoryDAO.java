@@ -51,6 +51,7 @@ public class OperationHistoryDAO extends BaseDAO
             values.put("AMOUNT", operation.getAmount());
             values.put("ISGAIN", (operation.isGain() ? 1 : 0));
             values.put("EXECDATE", operation.getExecDate());
+            values.put("SCHEDULEID", operation.getScheduleId());
             mDb.insert(TABLE_NAME, null, values);
             close();
             return true;
@@ -105,7 +106,8 @@ public class OperationHistoryDAO extends BaseDAO
                 "CATEGORIE, " +
                 "AMOUNT, " +
                 "ISGAIN, " +
-                "EXECDATE " +
+                "EXECDATE, " +
+                "SCHEDULEID " +
                 "FROM " + TABLE_NAME + " " +
                 "WHERE " + TABLE_KEY + " = ?";
 
@@ -135,7 +137,8 @@ public class OperationHistoryDAO extends BaseDAO
                 "CATEGORIE, " +
                 "AMOUNT, " +
                 "ISGAIN, " +
-                "EXECDATE " +
+                "EXECDATE, " +
+                "SCHEDULEID " +
                 "FROM " + TABLE_NAME + " " +
                 "WHERE ACCID = ? " +
                 "ORDER BY " + TABLE_KEY + " ASC";
@@ -164,6 +167,7 @@ public class OperationHistoryDAO extends BaseDAO
         operation.setAmount(Tools.getFloatFromColumn(cursor, "AMOUNT", 0.0f));
         operation.setGain(Tools.getBooleanFromColumn(cursor, "ISGAIN", false));
         operation.setExecDate(Tools.getStringFromColumn(cursor, "EXECDATE", "01/01/2018"));
+        operation.setScheduleId(Tools.getLongFromColumn(cursor, "SCHEDULEID", 0L));
         return operation;
     }
 }
