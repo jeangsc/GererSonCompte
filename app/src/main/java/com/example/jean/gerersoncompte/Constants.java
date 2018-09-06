@@ -14,4 +14,7 @@ public class Constants
     public final static int UNIT_TIME_DAY = 0;
     public final static int UNIT_TIME_MONTH = 1;
     public final static int UNIT_TIME_YEAR = 2;
+
+    public final static int TIMER_DAY_MILLIS = 60000;
+    public final static int TIMER_MIDNIGHT_MILLIS = 3000;
 }

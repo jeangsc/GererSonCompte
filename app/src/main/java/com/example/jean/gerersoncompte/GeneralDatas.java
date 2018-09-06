@@ -27,9 +27,9 @@ public class GeneralDatas implements Serializable
     private GeneralDatas()
     {
         this.context = null;
-        this.accCurId = 0;
-        this.isLoaded = false;
-        this.lastDate = "";
+        accCurId = 0;
+        isLoaded = false;
+        lastDate = "";
     }
 
     public void setContext(Context context)

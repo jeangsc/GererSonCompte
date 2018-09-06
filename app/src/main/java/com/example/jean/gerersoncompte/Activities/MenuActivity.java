@@ -2,14 +2,15 @@ package com.example.jean.gerersoncompte.Activities;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.CountDownTimer;
 import android.os.Environment;
-import android.support.v7.app.AppCompatActivity;
+import android.os.Handler;
 import android.util.Log;
-import android.view.MotionEvent;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.jean.gerersoncompte.ActivityManager;
 import com.example.jean.gerersoncompte.Constants;
 import com.example.jean.gerersoncompte.Database.AccountDAO;
 import com.example.jean.gerersoncompte.Database.OperationDAO;
@@ -29,7 +30,7 @@ import java.util.ArrayList;
 import java.util.Timer;
 import java.util.TimerTask;
 
-public class MenuActivity extends AppCompatActivity
+public class MenuActivity extends GSCActivity
 {
     private TextView textAccount = null;
     private TextView textBalance = null;
@@ -38,6 +39,7 @@ public class MenuActivity extends AppCompatActivity
 
     private Account account = null;
     private Timer timerMidnight = null;
+    private final Handler handler = new Handler();
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -55,25 +57,6 @@ public class MenuActivity extends AppCompatActivity
         textNextBalance = (TextView) findViewById(R.id.men_value_prochainsolde);
 
         copyDBFile();
-        if(timerMidnight == null)
-        {
-            TimerTask midnightTask = new TimerTask()
-            {
-                @Override
-                public void run()
-                {
-                    processTimerMidnight();
-                }
-            };
-            timerMidnight = new Timer();
-            timerMidnight.schedule(midnightTask, 10000, 10000);
-        }
-    }
-
-    private void processTimerMidnight()
-    {
-        CharSequence cs = "Midnight proceed";
-        Toast.makeText(getApplicationContext(), cs, Toast.LENGTH_LONG).show();
     }
 
     @Override
@@ -81,6 +64,7 @@ public class MenuActivity extends AppCompatActivity
     {
         super.onResume();
 
+        initTimer();
         //si le chargement de compte a réussi
         if(loadAccount())
         {
@@ -115,6 +99,63 @@ public class MenuActivity extends AppCompatActivity
         textToCome.setText(Tools.getFormattedAmount(toCome, currency, true));
         textToCome.setTextColor(colorToCome);
         textNextBalance.setText(Tools.getFormattedAmount(nextBalance, currency));
+    }
+
+    private void initTimer()
+    {
+        if(timerMidnight == null)
+        {
+            TimerTask midnightTask = new TimerTask()
+            {
+                @Override
+                public void run()
+                {
+                    handler.post(new Runnable() {
+                        @Override
+                        public void run() {
+                            processTimerMidnight();
+                        }
+                    });
+                }
+            };
+            timerMidnight = new Timer();
+            timerMidnight.schedule(midnightTask, 1000, 2000);
+        }
+    }
+
+
+    private void processTimerMidnight()
+    {
+        ActivityManager am = ActivityManager.getInstance();
+        if(am.appVisible())
+        {
+            CharSequence cs = "Midnight proceed";
+            Toast.makeText(getApplicationContext(), cs, Toast.LENGTH_LONG).show();
+        }
+
+        CountDownTimer countDown = new CountDownTimer(1000, 1000)
+        {
+            @Override
+            public void onFinish() {
+                ActivityManager am = ActivityManager.getInstance();
+                if(am.appVisible())
+                {
+                    CharSequence cs = "Midnight done";
+                    Toast.makeText(getApplicationContext(), cs, Toast.LENGTH_LONG).show();
+                }
+                updateDate();
+            }
+
+            @Override
+            public void onTick(long millisUntilFinished)
+            {
+
+            }
+        };
+        countDown.start();
+        //CharSequence cs = "Midnight proceed";
+        //Toast.makeText(getApplicationContext(), cs, Toast.LENGTH_LONG).show();
+
     }
 
     public void processAccountDetails(View v)
@@ -231,12 +272,5 @@ public class MenuActivity extends AppCompatActivity
         {
             e.printStackTrace();
         }
-    }
-
-    @Override
-    public boolean dispatchTouchEvent(MotionEvent event)
-    {
-        Tools.autoClearFocus(this, event);
-        return super.dispatchTouchEvent( event );
     }
 }

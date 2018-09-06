@@ -6,9 +6,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
-import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
-import android.view.MotionEvent;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.CheckBox;
@@ -32,7 +30,7 @@ import com.example.jean.gerersoncompte.Views.SeekBarRangeValues;
 import java.util.ArrayList;
 import java.util.TreeSet;
 
-public class OperationsManagerActivity extends AppCompatActivity
+public class OperationsManagerActivity extends GSCActivity
 {
     private final static int MENU_FILTER = 1;
     private final static int MENU_SORT = 2;
@@ -448,12 +446,5 @@ public class OperationsManagerActivity extends AppCompatActivity
                 selectedView.setBackgroundColor(color);
             }
         }
-    }
-
-    @Override
-    public boolean dispatchTouchEvent(MotionEvent event)
-    {
-        Tools.autoClearFocus(this, event);
-        return super.dispatchTouchEvent( event );
     }
 }

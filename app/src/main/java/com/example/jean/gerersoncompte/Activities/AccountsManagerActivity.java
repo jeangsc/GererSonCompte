@@ -5,9 +5,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
-import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
-import android.view.MotionEvent;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
@@ -18,11 +16,10 @@ import com.example.jean.gerersoncompte.Database.AccountDAO;
 import com.example.jean.gerersoncompte.GSCItems.Account;
 import com.example.jean.gerersoncompte.GeneralDatas;
 import com.example.jean.gerersoncompte.R;
-import com.example.jean.gerersoncompte.Tools;
 
 import java.util.ArrayList;
 
-public class AccountsManagerActivity extends AppCompatActivity
+public class AccountsManagerActivity extends GSCActivity
 {
     private ListView accountsList = null;
     private int selectedAccount = -1;
@@ -229,12 +226,5 @@ public class AccountsManagerActivity extends AppCompatActivity
             selectedView.setBackgroundColor(ContextCompat.getColor(this, R.color.colorTransparent));
         selectedView = null;
         selectedAccount = -1;
-    }
-
-    @Override
-    public boolean dispatchTouchEvent(MotionEvent event)
-    {
-        Tools.autoClearFocus(this, event);
-        return super.dispatchTouchEvent( event );
     }
 }

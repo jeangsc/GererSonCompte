@@ -2,8 +2,6 @@ package com.example.jean.gerersoncompte.Activities;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
-import android.view.MotionEvent;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -24,7 +22,7 @@ import com.example.jean.gerersoncompte.Views.EditTextErrorChecker;
 
 import java.util.TreeSet;
 
-public class OperationCreationActivity extends AppCompatActivity
+public class OperationCreationActivity extends GSCActivity
 {
     private EditTextErrorChecker editName       = null;
     private EditTextErrorChecker editCategory   = null;
@@ -171,12 +169,5 @@ public class OperationCreationActivity extends AppCompatActivity
         valid = editECExecDate.check() && valid;
 
         return valid;
-    }
-
-    @Override
-    public boolean dispatchTouchEvent(MotionEvent event)
-    {
-        Tools.autoClearFocus(this, event);
-        return super.dispatchTouchEvent( event );
     }
 }

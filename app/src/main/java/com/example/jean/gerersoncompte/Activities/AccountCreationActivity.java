@@ -2,8 +2,6 @@ package com.example.jean.gerersoncompte.Activities;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
-import android.view.MotionEvent;
 import android.view.View;
 import android.widget.CheckBox;
 import android.widget.RelativeLayout;
@@ -16,8 +14,8 @@ import com.example.jean.gerersoncompte.R;
 import com.example.jean.gerersoncompte.Tools;
 import com.example.jean.gerersoncompte.Views.EditTextErrorChecker;
 
-public class AccountCreationActivity extends AppCompatActivity {
-
+public class AccountCreationActivity extends GSCActivity
+{
     private EditTextErrorChecker m_editName = null;
     private EditTextErrorChecker m_editBalance = null;
     private CheckBox m_checkCurrent = null;
@@ -111,12 +109,5 @@ public class AccountCreationActivity extends AppCompatActivity {
         valid = m_editName.check() && valid;
         valid = m_editBalance.check() && valid;
         return valid;
-    }
-
-    @Override
-    public boolean dispatchTouchEvent(MotionEvent event)
-    {
-        Tools.autoClearFocus(this, event);
-        return super.dispatchTouchEvent( event );
     }
 }
